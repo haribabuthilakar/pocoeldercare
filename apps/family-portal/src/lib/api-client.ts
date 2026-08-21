@@ -1,5 +1,16 @@
 export class ApiClient {
-  private static baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
+  static getBaseUrl(): string {
+    if (process.env.NEXT_PUBLIC_API_URL) {
+      return process.env.NEXT_PUBLIC_API_URL;
+    }
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname;
+      const protocol = window.location.protocol;
+      const port = hostname === 'localhost' || hostname === '127.0.0.1' ? '3001' : '8081';
+      return `${protocol}//${hostname}:${port}/api/v1`;
+    }
+    return 'http://localhost:3001/api/v1';
+  }
 
   static getAccessToken(): string | null {
     if (typeof window === 'undefined') return null;
@@ -33,7 +44,8 @@ export class ApiClient {
       ...(options.headers || {}),
     };
 
-    const url = `${this.baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+    const baseUrl = this.getBaseUrl();
+    const url = `${baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
     let response = await fetch(url, { ...options, headers });
 
     // Handle token refresh if 401 Unauthorized
@@ -41,7 +53,7 @@ export class ApiClient {
       const refreshToken = this.getRefreshToken();
       if (refreshToken) {
         try {
-          const refreshRes = await fetch(`${this.baseUrl}/auth/refresh`, {
+          const refreshRes = await fetch(`${baseUrl}/auth/refresh`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ refreshToken }),

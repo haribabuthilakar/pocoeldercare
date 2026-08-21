@@ -12,9 +12,19 @@ export class RedisService implements OnModuleDestroy {
       this.configService?.get<string>('REDIS_URL') ||
       process.env.REDIS_URL ||
       'redis://localhost:6379';
+
     this.client = new Redis(redisUrl, {
-      maxRetriesPerRequest: 3,
-      retryStrategy: (times) => Math.min(times * 100, 2000),
+      maxRetriesPerRequest: 1,
+      enableOfflineQueue: false,
+      connectTimeout: 5000,
+      lazyConnect: false,
+      retryStrategy: (times) => {
+        if (times > 5) {
+          this.logger.warn('Redis connection retry limit reached. Operating in degraded fallback mode.');
+          return null; // Stop retrying in tight loop
+        }
+        return Math.min(times * 1000, 5000);
+      },
     });
 
     this.client.on('error', (err) => {

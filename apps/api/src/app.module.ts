@@ -9,6 +9,7 @@ import { SopModule } from './modules/sop/sop.module';
 import { ClinicalModule } from './modules/clinical/clinical.module';
 import { BillingModule } from './modules/billing/billing.module';
 import { VitalsModule } from './modules/vitals/vitals.module';
+import { HealthModule } from './modules/health/health.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { VitalsModule } from './modules/vitals/vitals.module';
     }),
     PrismaModule,
     RedisModule,
+    HealthModule,
     AuthModule,
     HouseholdsModule,
     CatalogModule,

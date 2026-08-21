@@ -66,23 +66,29 @@ export class BillingService {
 
   async holdFunds(dto: HoldFundsDto) {
     return this.prisma.$transaction(async (tx) => {
-      const wallet = await tx.wallet.findUnique({ where: { id: dto.walletId } });
-      if (!wallet) {
-        throw new NotFoundException(`Wallet ${dto.walletId} not found`);
-      }
-
-      if (wallet.balancePaise < dto.amountPaise) {
-        throw new BadRequestException(
-          `Insufficient wallet balance. Available: ₹${(wallet.balancePaise / 100).toFixed(2)}, Required: ₹${(dto.amountPaise / 100).toFixed(2)}`,
-        );
-      }
-
-      // Deduct balance and create HOLD ledger entry
-      const updatedWallet = await tx.wallet.update({
-        where: { id: dto.walletId },
+      // Atomic conditional update ensuring balance never drops below zero
+      const updateResult = await tx.wallet.updateMany({
+        where: {
+          id: dto.walletId,
+          balancePaise: { gte: dto.amountPaise },
+        },
         data: {
           balancePaise: { decrement: dto.amountPaise },
         },
+      });
+
+      if (updateResult.count === 0) {
+        const currentWallet = await tx.wallet.findUnique({ where: { id: dto.walletId } });
+        if (!currentWallet) {
+          throw new NotFoundException(`Wallet ${dto.walletId} not found`);
+        }
+        throw new BadRequestException(
+          `Insufficient wallet balance. Available: ₹${(currentWallet.balancePaise / 100).toFixed(2)}, Required: ₹${(dto.amountPaise / 100).toFixed(2)}`,
+        );
+      }
+
+      const updatedWallet = await tx.wallet.findUniqueOrThrow({
+        where: { id: dto.walletId },
       });
 
       const transaction = await tx.walletTransaction.create({

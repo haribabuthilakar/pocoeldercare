@@ -41,8 +41,8 @@ module.exports = {
     {
       name: 'poco-field-app',
       cwd: './apps/field-app',
-      script: 'node_modules/vite/dist/node/cli.js',
-      args: 'preview --port 3002 --host 0.0.0.0',
+      script: 'pnpm',
+      args: 'preview',
       env: {
         NODE_ENV: 'production',
       },

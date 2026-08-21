@@ -1,0 +1,24 @@
+{
+  "name": "pocoeldercare",
+  "private": true,
+  "packageManager": "pnpm@10.30.1",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "test:unit": "turbo test:unit",
+    "db:generate": "pnpm --filter @poco/database prisma:generate",
+    "db:push": "pnpm --filter @poco/database prisma:push",
+    "db:seed": "pnpm --filter @poco/database prisma:seed"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.0",
+    "turbo": "^2.3.4",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@types/bcryptjs": "^3.0.0",
+    "bcryptjs": "^3.0.3"
+  }
+}

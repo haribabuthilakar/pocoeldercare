@@ -1,4 +1,4 @@
-﻿# Pococare Elder Care Platform
+# Pococare Elder Care Platform
 
 ## What This Is
 
@@ -55,6 +55,11 @@ Uncompromising reliability and peace of mind for families through rapid, SLA-bac
 
 - **Tech Stack**: Turborepo + pnpm monorepo; NestJS (REST API); PostgreSQL + Prisma ORM; Next.js (Web Portals); React Native / Expo (Mobile); Vitest + Playwright for testing.
 - **Environment**: Local Windows 11 Docker environment for development and testing; AWS Mumbai (ap-south-1) for production.
+- **UI & Brand Design System**:
+  - **Primary Colour**: `#12C395` (Mint / Emerald Green — clinical calmness, health stability, trust)
+  - **Secondary Colour**: `#FE1D8F` (Vivid Magenta / Pink — NRI telemetry highlights, high-energy accents, urgent badges)
+  - **Typography**: `Poppins, sans-serif` across all web and mobile apps.
+  - **Visual Effects & Micro-Interactions**: Glassmorphism backdrop-blur, smooth lift hover physics (`hover:-translate-y-1 hover:shadow-xl duration-300`), dual glowing shadows, pulsing live indicators, and animated badge states.
 - **Telephony & Voice**: Exotel for CTI/IVR telephony; Google Cloud Speech-to-Text for Indian languages.
 - **Security & Privacy**: Indian health data privacy compliance with role-based access control and encrypted ICE storage.
 

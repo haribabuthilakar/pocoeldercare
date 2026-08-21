@@ -1,0 +1,448 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RoleType {
+  ADMIN
+  OPS_MANAGER
+  DISPATCHER
+  CARE_OFFICER
+  DOCTOR
+  NURSE
+  PHYSIOTHERAPIST
+  FAMILY_PRIMARY_NRI
+  FAMILY_PRIMARY_LOCAL
+  FAMILY_VIEWER
+  ELDER
+}
+
+enum PlanTierName {
+  KAVACH
+  SAHARA
+  SAMPOORNA
+  NIVAS
+}
+
+enum ServiceCategoryName {
+  A_EMERGENCY
+  B_PRIMARY_CARE
+  C_DIAGNOSTICS
+  D_MEDICATION
+  E_THERAPY
+  F_HIGH_DEPENDENCY
+  G_RECORDS_INSURANCE
+  H_DAILY_LIVING
+  I_FINANCIAL_LEGAL
+  J_MOBILITY_TRAVEL
+  K_COMPANIONSHIP
+  L_FAMILY_LAYER
+}
+
+enum ExecutionStatusType {
+  SCHEDULED
+  EN_ROUTE
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  FAILED
+}
+
+enum EmergencySeverity {
+  CRITICAL
+  URGENT
+  ROUTINE
+}
+
+enum EmergencyStatusType {
+  OPEN
+  DISPATCHED
+  AT_SCENE
+  HOSPITALIZED
+  RESOLVED
+  FALSE_ALARM
+}
+
+enum TransactionTypeEnum {
+  CREDIT
+  HOLD
+  DEBIT
+  REFUND
+}
+
+enum ConsultTypeEnum {
+  DOCTOR_HOME_VISIT
+  GP_TELECONSULT
+  SPECIALIST_TELECONSULT
+}
+
+enum AbhaSyncStatus {
+  NOT_LINKED
+  PENDING
+  LINKED
+  FAILED
+}
+
+model User {
+  id               String            @id @default(uuid())
+  phone            String?          @unique
+  email            String?          @unique
+  passwordHash     String?
+  name             String
+  isActive         Boolean          @default(true)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  userRoles        UserRoleMapping[]
+  assignedVisits   ServiceExecution[] @relation("AssignedProvider")
+  assignedHouseholds Household[]     @relation("CareOfficerHouseholds")
+  clinicalConsults ClinicalConsult[]
+  prescriptions    Prescription[]
+
+  @@index([phone])
+  @@index([email])
+}
+
+model UserRoleMapping {
+  id          String    @id @default(uuid())
+  userId      String
+  role        RoleType
+  householdId String?
+  createdAt   DateTime  @default(now())
+
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  household   Household? @relation(fields: [householdId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, role, householdId])
+  @@index([userId])
+  @@index([householdId])
+}
+
+model Household {
+  id                  String             @id @default(uuid())
+  name                String
+  city                String
+  addressLine         String
+  postalCode          String
+  primaryContactPhone String
+  timeZone            String             @default("Asia/Kolkata")
+  careOfficerId       String?
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+
+  careOfficer         User?             @relation("CareOfficerHouseholds", fields: [careOfficerId], references: [id])
+  members             Member[]
+  subscriptions       Subscription[]
+  wallet              Wallet?
+  serviceExecutions   ServiceExecution[]
+  emergencyEvents     EmergencyEvent[]
+  userRoles           UserRoleMapping[]
+
+  @@index([city])
+  @@index([careOfficerId])
+}
+
+model Member {
+  id                String             @id @default(uuid())
+  householdId       String
+  firstName         String
+  lastName          String
+  phone             String?
+  email             String?
+  relationship      String             @default("PARENT")
+  dateOfBirth       DateTime?
+  gender            String?
+  abhaNumber        String?
+  abhaStatus        AbhaSyncStatus     @default(NOT_LINKED)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  household         Household          @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  iceProfile        IceProfile?
+  vitalsReadings    VitalsReading[]
+  serviceExecutions ServiceExecution[]
+  emergencyEvents   EmergencyEvent[]
+  clinicalConsults  ClinicalConsult[]
+  prescriptions     Prescription[]
+
+  @@index([householdId])
+  @@index([phone])
+}
+
+model IceProfile {
+  id                     String    @id @default(uuid())
+  memberId               String  @unique
+  bloodGroup             String?
+  allergies              Json    @default("[]")
+  chronicConditions      Json    @default("[]")
+  currentMedications     Json    @default("[]")
+  baselineVitals         Json    @default("{}")
+  preferredHospitalName  String?
+  preferredHospitalPhone  String?
+  preferredHospitalAddress String?
+  emergencyNotes         String?
+  active                 Boolean @default(true)
+  lastReviewedAt         DateTime@default(now())
+  updatedAt              DateTime@updatedAt
+
+  member                 Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@index([memberId])
+}
+
+model ServiceCatalog {
+  id                 String             @id @default(uuid())
+  serviceNumber      Int               @unique
+  code               String             @unique
+  name               String
+  category           ServiceCategoryName
+  description        String
+  unitPricePaise     Int               @default(0)
+  slaMinutes         Int?
+  isPayPerUseOnly    Boolean           @default(false)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  planQuotas         PlanQuota[]
+  sopTemplates       SopTemplate[]
+  serviceExecutions  ServiceExecution[]
+  subscriptionQuotas SubscriptionQuotaLedger[]
+
+  @@index([category])
+  @@index([code])
+}
+
+model PlanTier {
+  id               String       @id @default(uuid())
+  name             PlanTierName  @unique
+  annualPricePaise Int           @default(0)
+  description      String
+  createdAt        DateTime      @default(now())
+
+  quotas           PlanQuota[]
+  subscriptions    Subscription[]
+}
+
+
+model PlanQuota {
+  id                 String         @id @default(uuid())
+  planTierId         String
+  serviceCatalogId   String
+  includedUnitsYear  Int           @default(0)
+  isUnlimited        Boolean        @default(false)
+
+  planTier           PlanTier        @relation(fields: [planTierId], references: [id], onDelete: Cascade)
+  serviceCatalog     ServiceCatalog  @relation(fields: [serviceCatalogId], references: [id], onDelete: Cascade)
+
+  @@unique([planTierId, serviceCatalogId])
+  @@index([planTierId])
+}
+
+model Subscription {
+  id            String                    @id @default(uuid())
+  householdId   String
+  planTierId    String
+  status        String                    @default("ACTIVE")
+  startDate     DateTime                  @default(now())
+  endDate       DateTime
+  autoRenew     Boolean                  @default(true)
+  createdAt     DateTime                  @default(now())
+  updatedAt     DateTime                  @updatedAt
+
+  household     Household                 @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  planTier      PlanTier                 @relation(fields: [planTierId], references: [id])
+  quotaLedgers   SubscriptionQuotaLedger[]
+
+  @@index([householdId])
+  @@index([planTierId])
+}
+
+model SubscriptionQuotaLedger {
+  id               String         @id @default(uuid())
+  subscriptionId   String
+  serviceCatalogId String
+  totalAllocated   Int            @default(0)
+  usedUnits        Int            @default(0)
+  remainingUnits   Int            @default(0)
+  lastUpdatedAt    DateTime       @updatedAt
+
+  subscription     Subscription   @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  serviceCatalog   ServiceCatalog @relation(fields: [serviceCatalogId], references: [id])
+
+  @@unique([subscriptionId, serviceCatalogId])
+  @@index([subscriptionId])
+}
+
+model Wallet {
+  id           String              @id @default(uuid())
+  householdId  String              @unique
+  balancePaise Int                 @default(0)
+  currency     String              @default("INR")
+  updatedAt    DateTime            @updatedAt
+
+  household    Household           @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  transactions WalletTransaction[]
+
+  @@index([householdId])
+}
+
+model WalletTransaction {
+  id                 String              @id @default(uuid())
+  walletId           String
+  amountPaise        Int
+  type               TransactionTypeEnum
+  referenceType      String
+  referenceId        String?
+  description        String
+  createdAt          DateTime            @default(now())
+
+  wallet             Wallet              @relation(fields: [walletId], references: [id], onDelete: Cascade)
+
+  @@index([walletId])
+  @@index([referenceId])
+}
+
+
+model SopTemplate {
+  id               String             @id @default(uuid())
+  serviceCatalogId String
+  version          Int                @default(1)
+  title            String
+  description      String
+  jsonSchema       Json
+  active           Boolean            @default(true)
+  createdAt        DateTime           @default(now())
+
+  serviceCatalog   ServiceCatalog     @relation(fields: [serviceCatalogId], references: [id], onDelete: Cascade)
+  executions       ServiceExecution[]
+
+  @@unique([serviceCatalogId, version])
+  @@index([serviceCatalogId])
+}
+
+model ServiceExecution {
+  id                 String              @id @default(uuid())
+  householdId        String
+  memberId           String
+  serviceCatalogId   String
+  sopTemplateId      String?
+  assignedToUserId   String?
+  status             ExecutionStatusType @default(SCHEDULED)
+  scheduledAt        DateTime
+  startedAt          DateTime?
+  completedAt        DateTime?
+  isDrill            Boolean             @default(false)
+  checklistData      Json                @default("{}")
+  notes              String?
+  totalChargePaise   Int                 @default(0)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  household         Household            @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  member             Member               @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  serviceCatalog     ServiceCatalog      @relation(fields: [serviceCatalogId], references: [id])
+  sopTemplate        SopTemplate?         @relation(fields: [sopTemplateId], references: [id])
+  assignedProvider   User?                @relation("AssignedProvider", fields: [assignedToUserId], references: [id])
+  clinicalConsult    ClinicalConsult?
+  vitalsReadings     VitalsReading[]
+
+  @@index([householdId])
+  @@index([memberId])
+  @@index([assignedToUserId])
+  @@index([scheduledAt])
+}
+
+
+model ClinicalConsult {
+  id                 String            @id @default(uuid())
+  serviceExecutionId String            @unique
+  memberId           String
+  doctorUserId       String
+  consultType        ConsultTypeEnum
+  specialty          String?
+  chiefComplaint     String
+  clinicalNotes      String
+  diagnosisIcd10     String?
+  vitalsSummary      Json              @default("{}")
+  followUpDate       DateTime?
+  createdAt          DateTime          @default(now())
+
+  serviceExecution   ServiceExecution  @relation(fields: [serviceExecutionId], references: [id], onDelete: Cascade)
+  member             Member            @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  doctor             User              @relation(fields: [doctorUserId], references: [id])
+  prescriptions      Prescription[]
+
+  @@index([memberId])
+  @@index([doctorUserId])
+}
+
+
+model Prescription {
+  id                String           @id @default(uuid())
+  clinicalConsultId String
+  memberId          String
+  doctorUserId       String
+  issuedAt          DateTime         @default(now())
+  medicationItems    Json             @default("[]")
+  pdfUrl             String?
+  createdAt         DateTime         @default(now())
+
+  clinicalConsult   ClinicalConsult @relation(fields: [clinicalConsultId], references: [id], onDelete: Cascade)
+  member            Member          @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  doctor            User            @relation(fields: [doctorUserId], references: [id])
+
+  @@index([clinicalConsultId])
+  @@index([memberId])
+}
+
+
+model VitalsReading {
+  id                 String            @id @default(uuid())
+  memberId           String
+  serviceExecutionId String?
+  systolicBp         Int?
+  diastolicBp        Int?
+  bloodGlucoseMgDl   Float?
+  fastingState       String?
+  pulseBpm           Int?
+  spo2Percent        Float?
+  weightKg           Float?
+  temperatureF       Float?
+  recordedAt         DateTime          @default(now())
+  isAbnormal         Boolean          @default(false)
+  notes              String?
+
+  member             Member            @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  serviceExecution   ServiceExecution? @relation(fields: [serviceExecutionId], references: [id])
+
+  @@index([memberId])
+  @@index([recordedAt])
+}
+
+model EmergencyEvent {
+  id                   String              @id @default(uuid())
+  householdId          String
+  memberId             String
+  initiatedByPhone     String
+  severity             EmergencySeverity   @default(CRITICAL)
+  status               EmergencyStatusType @default(OPEN)
+  isDrill              Boolean             @default(false)
+  ambulanceDispatchedAt DateTime?
+  ambulanceArrivedAt   DateTime?
+  slaDeadline          DateTime?
+  resolvedAt           DateTime?
+  outcomeSummary       String?
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+
+  household            Household            @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  member               Member              @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@index([householdId])
+  @@index([memberId])
+  @@index([status])
+}

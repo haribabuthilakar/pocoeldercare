@@ -1,6 +1,18 @@
 import { PrismaClient } from '@prisma/client';
 
 export * from '@prisma/client';
+export {
+  PrismaClient,
+  RoleType,
+  PlanTierName,
+  ServiceCategoryName,
+  ExecutionStatusType,
+  EmergencySeverity,
+  EmergencyStatusType,
+  TransactionTypeEnum,
+  ConsultTypeEnum,
+  AbhaSyncStatus,
+} from '@prisma/client';
 
 declare global {
   var prisma: PrismaClient | undefined;

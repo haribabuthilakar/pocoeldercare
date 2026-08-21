@@ -5,9 +5,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "prisma generate && tsc",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
+    "build": "prisma generate --schema=./prisma/schema.prisma && tsc",
+    "db:generate": "prisma generate --schema=./prisma/schema.prisma",
+    "db:push": "prisma db push --schema=./prisma/schema.prisma",
     "db:seed": "ts-node prisma/seed.ts",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",

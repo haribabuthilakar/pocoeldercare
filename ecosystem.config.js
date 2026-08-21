@@ -22,9 +22,8 @@ module.exports = {
     {
       name: 'poco-ops-crm',
       cwd: './apps/ops-crm',
-      script: 'node_modules/next/dist/bin/next',
-      args: 'start -p 3003',
-      node_args: '--max-old-space-size=512',
+      script: 'pnpm',
+      args: 'start',
       env: {
         NODE_ENV: 'production',
         PORT: 3003,
@@ -38,9 +37,8 @@ module.exports = {
     {
       name: 'poco-family-portal',
       cwd: './apps/family-portal',
-      script: 'node_modules/next/dist/bin/next',
-      args: 'start -p 3000',
-      node_args: '--max-old-space-size=512',
+      script: 'pnpm',
+      args: 'start',
       env: {
         NODE_ENV: 'production',
         PORT: 3000,
@@ -68,9 +66,8 @@ module.exports = {
     {
       name: 'poco-db-admin',
       cwd: './apps/db-admin',
-      script: 'node_modules/next/dist/bin/next',
-      args: 'start -p 3005',
-      node_args: '--max-old-space-size=512',
+      script: 'pnpm',
+      args: 'start',
       env: {
         NODE_ENV: 'production',
         PORT: 3005,

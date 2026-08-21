@@ -57,12 +57,12 @@
 
 ### 6. Telephony Voice Ingestion & Integrations (INT)
 
-- [ ] **INT-01**: Dedicated phone line recording webhook via Exotel for elder non-emergency requests.
-- [ ] **INT-02**: Speech-to-text pipeline using Google Cloud STT v2 for Indian regional languages (Hindi, Tamil, Telugu, Kannada, etc.).
-- [ ] **INT-03**: LLM-powered structured extraction converting elder voicemails into categorized CRM tasks.
-- [ ] **INT-04**: ABHA (Ayushman Bharat Health Account) sync status monitoring per household.
-- [ ] **INT-05**: Community & Content lead mobile interface for rapid event and photo logging.
-- [ ] **INT-06**: Diagnostic lab partner webhook integration for automated test report ingestion.
+- [x] **INT-01**: Dedicated phone line recording webhook via Exotel for elder non-emergency requests.
+- [x] **INT-02**: Speech-to-text pipeline using Google Cloud STT v2 for Indian regional languages (Hindi, Tamil, Telugu, Kannada, etc.).
+- [x] **INT-03**: LLM-powered structured extraction converting elder voicemails into categorized CRM tasks.
+- [x] **INT-04**: ABHA (Ayushman Bharat Health Account) sync status monitoring per household.
+- [x] **INT-05**: Community & Content lead mobile interface for rapid event and photo logging.
+- [x] **INT-06**: Diagnostic lab partner webhook integration for automated test report ingestion.
 
 ---
 
@@ -79,7 +79,7 @@
 ## Out of Scope
 
 | Feature | Reason |
-|---------|--------|
+|---|---|
 | Live-in 24x7 attendant service (Nivas tier) | High operational risk and live-in caregiver staffing overhead; deferred to future milestone |
 | International Forex payment handling | Adds unnecessary cross-border payment gateway friction for initial launch; INR used initially |
 | Custom wearable device manufacturing | High capex and regulatory burden; platform integrates with existing certified medical IoT devices |
@@ -89,48 +89,48 @@
 ## Traceability
 
 | Requirement | Phase | Status |
-|-------------|-------|--------|
-| FND-01 | Phase 1 | Pending |
-| FND-02 | Phase 1 | Pending |
-| FND-03 | Phase 1 | Pending |
-| FND-04 | Phase 1 | Pending |
-| FND-05 | Phase 1 | Pending |
-| FND-06 | Phase 1 | Pending |
-| FND-07 | Phase 1 | Pending |
-| FND-08 | Phase 1 | Pending |
-| FAM-01 | Phase 2 | Pending |
-| FAM-02 | Phase 2 | Pending |
-| FAM-03 | Phase 2 | Pending |
-| FAM-04 | Phase 2 | Pending |
-| FAM-05 | Phase 2 | Pending |
-| FAM-06 | Phase 2 | Pending |
-| FAM-07 | Phase 2 | Pending |
-| FLD-01 | Phase 3 | Pending |
-| FLD-02 | Phase 3 | Pending |
-| FLD-03 | Phase 3 | Pending |
-| FLD-04 | Phase 3 | Pending |
-| FLD-05 | Phase 3 | Pending |
-| FLD-06 | Phase 3 | Pending |
-| FLD-07 | Phase 3 | Pending |
-| OPS-01 | Phase 4 | Pending |
-| OPS-02 | Phase 4 | Pending |
-| OPS-03 | Phase 4 | Pending |
-| OPS-04 | Phase 4 | Pending |
-| OPS-05 | Phase 4 | Pending |
-| OPS-06 | Phase 4 | Pending |
-| OPS-07 | Phase 4 | Pending |
+|---|---|---|
+| FND-01 | Phase 1 | Satisfied |
+| FND-02 | Phase 1 | Satisfied |
+| FND-03 | Phase 1 | Satisfied |
+| FND-04 | Phase 1 | Satisfied |
+| FND-05 | Phase 1 | Satisfied |
+| FND-06 | Phase 1 | Satisfied |
+| FND-07 | Phase 1 | Satisfied |
+| FND-08 | Phase 1 | Satisfied |
+| FAM-01 | Phase 2 | Satisfied |
+| FAM-02 | Phase 2 | Satisfied |
+| FAM-03 | Phase 2 | Satisfied |
+| FAM-04 | Phase 2 | Satisfied |
+| FAM-05 | Phase 2 | Satisfied |
+| FAM-06 | Phase 2 | Satisfied |
+| FAM-07 | Phase 2 | Satisfied |
+| FLD-01 | Phase 3 | Satisfied |
+| FLD-02 | Phase 3 | Satisfied |
+| FLD-03 | Phase 3 | Satisfied |
+| FLD-04 | Phase 3 | Satisfied |
+| FLD-05 | Phase 3 | Satisfied |
+| FLD-06 | Phase 3 | Satisfied |
+| FLD-07 | Phase 3 | Satisfied |
+| OPS-01 | Phase 4 | Satisfied |
+| OPS-02 | Phase 4 | Satisfied |
+| OPS-03 | Phase 4 | Satisfied |
+| OPS-04 | Phase 4 | Satisfied |
+| OPS-05 | Phase 4 | Satisfied |
+| OPS-06 | Phase 4 | Satisfied |
+| OPS-07 | Phase 4 | Satisfied |
 | EMG-01 | Phase 5 | Satisfied |
 | EMG-02 | Phase 5 | Satisfied |
 | EMG-03 | Phase 5 | Satisfied |
 | EMG-04 | Phase 5 | Satisfied |
 | EMG-05 | Phase 5 | Satisfied |
 | EMG-06 | Phase 5 | Satisfied |
-| INT-01 | Phase 6 | Pending |
-| INT-02 | Phase 6 | Pending |
-| INT-03 | Phase 6 | Pending |
-| INT-04 | Phase 6 | Pending |
-| INT-05 | Phase 6 | Pending |
-| INT-06 | Phase 6 | Pending |
+| INT-01 | Phase 6 | Satisfied |
+| INT-02 | Phase 6 | Satisfied |
+| INT-03 | Phase 6 | Satisfied |
+| INT-04 | Phase 6 | Satisfied |
+| INT-05 | Phase 6 | Satisfied |
+| INT-06 | Phase 6 | Satisfied |
 
 **Coverage:**
 - v1 requirements: 37 total

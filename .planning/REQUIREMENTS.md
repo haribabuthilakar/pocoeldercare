@@ -1,4 +1,4 @@
-﻿# Requirements: Pococare Elder Care Platform
+# Requirements: Pococare Elder Care Platform
 
 **Defined:** 2026-08-21
 **Core Value:** Uncompromising reliability and peace of mind for families through rapid, SLA-backed emergency coordination, verified in-person care officer visits, and transparent operational visibility.
@@ -48,12 +48,12 @@
 
 ### 5. Emergency Dispatcher Command Centre (EMG)
 
-- [ ] **EMG-01**: Real-time emergency queue with priority ranking for device alerts (fall/SOS) and inbound PSTN calls.
-- [ ] **EMG-02**: Exotel CTI caller ID mapping displaying member identification and ICE profile in < 2 seconds.
-- [ ] **EMG-03**: One-click BLS ambulance dispatch and hospital pre-brief sheet transmission.
-- [ ] **EMG-04**: Live visual countdown timer against published response SLAs with supervisor auto-escalation.
-- [ ] **EMG-05**: Timezone-aware automated family escalation call tree.
-- [ ] **EMG-06**: Emergency event closure logging (resolved, hospitalized, false alarm) and weekly SLA performance rollup.
+- [x] **EMG-01**: Real-time emergency queue with priority ranking for device alerts (fall/SOS) and inbound PSTN calls.
+- [x] **EMG-02**: Exotel CTI caller ID mapping displaying member identification and ICE profile in < 2 seconds.
+- [x] **EMG-03**: One-click BLS ambulance dispatch and hospital pre-brief sheet transmission.
+- [x] **EMG-04**: Live visual countdown timer against published response SLAs with supervisor auto-escalation.
+- [x] **EMG-05**: Timezone-aware automated family escalation call tree.
+- [x] **EMG-06**: Emergency event closure logging (resolved, hospitalized, false alarm) and weekly SLA performance rollup.
 
 ### 6. Telephony Voice Ingestion & Integrations (INT)
 
@@ -119,12 +119,12 @@
 | OPS-05 | Phase 4 | Pending |
 | OPS-06 | Phase 4 | Pending |
 | OPS-07 | Phase 4 | Pending |
-| EMG-01 | Phase 5 | Pending |
-| EMG-02 | Phase 5 | Pending |
-| EMG-03 | Phase 5 | Pending |
-| EMG-04 | Phase 5 | Pending |
-| EMG-05 | Phase 5 | Pending |
-| EMG-06 | Phase 5 | Pending |
+| EMG-01 | Phase 5 | Satisfied |
+| EMG-02 | Phase 5 | Satisfied |
+| EMG-03 | Phase 5 | Satisfied |
+| EMG-04 | Phase 5 | Satisfied |
+| EMG-05 | Phase 5 | Satisfied |
+| EMG-06 | Phase 5 | Satisfied |
 | INT-01 | Phase 6 | Pending |
 | INT-02 | Phase 6 | Pending |
 | INT-03 | Phase 6 | Pending |

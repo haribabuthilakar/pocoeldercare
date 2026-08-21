@@ -1,4 +1,4 @@
-﻿# Roadmap: Pococare Elder Care Platform
+# Roadmap: Pococare Elder Care Platform
 
 ## Overview
 
@@ -10,11 +10,11 @@ Pococare is delivered in six structured phases following a modular horizontal-la
 - Integer phases (1, 2, 3): Planned milestone work
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: Foundation & Core Backend API** - Turborepo monorepo, NestJS REST API, Prisma schema, auth/RBAC, ICE medical profile, and 90-service catalog engine.
-- [ ] **Phase 2: Family Portal Web Application** - Next.js portal for family/NRI children with vitals trends, dual-timezone calendar, wallet top-up, and monthly value digest.
+- [x] **Phase 1: Foundation & Core Backend API** - Turborepo monorepo, NestJS REST API, Prisma schema, auth/RBAC, ICE medical profile, and 90-service catalog engine.
+- [x] **Phase 2: Family Portal Web Application** - Next.js portal for family/NRI children with vitals trends, dual-timezone calendar, wallet top-up, and monthly value digest.
 - [ ] **Phase 3: Field App for Care Officers** - React Native (Expo) mobile app with offline SQLite sync, route sequencing, dynamic SOP checklists, vitals capture, and dry-run drills.
 - [ ] **Phase 4: Operations CRM & Admin Hub** - Next.js ops dashboard for multi-city monitoring, partner panels, auto-assignment with override audit logs, and payout reconciliation.
-- [ ] **Phase 5: Emergency Dispatcher Command Centre** - Low-latency Dispatcher UI with Exotel CTI caller ID mapping, <2s ICE lookup, live SLA countdowns, and hospital pre-briefs.
+- [x] **Phase 5: Emergency Dispatcher Command Centre** - Low-latency Dispatcher UI with Exotel CTI caller ID mapping, <2s ICE lookup, live SLA countdowns, and hospital pre-briefs.
 - [ ] **Phase 6: Telephony Voice Ingestion & Integrations** - Exotel voicemail recording + Google Cloud STT in Indian languages, ABHA sync monitor, and community lead interface.
 
 ---
@@ -34,9 +34,9 @@ Pococare is delivered in six structured phases following a modular horizontal-la
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: Turborepo workspace setup, Prisma database schema, and Docker compose environment.
-- [ ] 01-02: Authentication/RBAC, Household onboarding, ICE profile CRUD, and versioned SOP catalog REST APIs.
-- [ ] 01-03: Doctor visits, teleconsults, and INR wallet billing APIs with comprehensive Vitest suite.
+- [x] 01-01: Turborepo workspace setup, Prisma database schema, and Docker compose environment.
+- [x] 01-02: Authentication/RBAC, Household onboarding, ICE profile CRUD, and versioned SOP catalog REST APIs.
+- [x] 01-03: Doctor visits, teleconsults, and INR wallet billing APIs with comprehensive Vitest suite.
 
 ### Phase 2: Family Portal Web Application
 **Goal**: Deliver a Next.js web application for family members and NRI children featuring vitals trend visualization, dual-timezone appointment calendar, service booking, INR wallet management, and monthly value digests.
@@ -51,9 +51,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01: Family auth, multi-household switcher, and vitals trend visualization dashboard.
-- [ ] 02-02: Dual-timezone interactive calendar and pay-per-use service booking workflow.
-- [ ] 02-03: In-app wallet top-up, monthly value digest, and Care Officer profile display.
+- [x] 02-01: Family auth, multi-household switcher, and vitals trend visualization dashboard.
+- [x] 02-02: Dual-timezone interactive calendar and pay-per-use service booking workflow.
+- [x] 02-03: In-app wallet top-up, monthly value digest, and Care Officer profile display.
 
 ### Phase 3: Field App for Care Officers
 **Goal**: Deliver a React Native (Expo) mobile app for field Care Officers with offline-first SQLite synchronization, daily route sequencing, dynamic SOP checklists (<5 min execution), vitals capture, and dry-run drill mode.
@@ -67,9 +67,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01: React Native Expo setup, mobile auth, and offline SQLite data sync engine.
-- [ ] 03-02: Daily route schedule view and dynamic SOP checklist runner.
-- [ ] 03-03: Vitals capture, medication checklist, claims capture, and dry-run emergency drill mode.
+- [x] 03-01: React Native Expo setup, mobile auth, and offline SQLite data sync engine.
+- [x] 03-02: Daily route schedule view and dynamic SOP checklist runner.
+- [x] 03-03: Vitals capture, medication checklist, claims capture, and dry-run emergency drill mode.
 
 ### Phase 4: Operations CRM & Admin Hub
 **Goal**: Deliver a Next.js Operations CRM dashboard for live multi-city monitoring, household CRM timeline management, partner & doctor panels, intelligent auto-assignment with override audit logs, and payout reconciliation.
@@ -84,9 +84,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 04-01: Multi-city live operations dashboard and unified household CRM timeline.
-- [ ] 04-02: Doctor/partner panel management and auto-assignment engine with override audit logging.
-- [ ] 04-03: Visual catalog/SOP version editor and partner payout reconciliation reporting.
+- [x] 04-01: Multi-city live operations dashboard and unified household CRM timeline.
+- [x] 04-02: Doctor/partner panel management and auto-assignment engine with override audit logging.
+- [x] 04-03: Visual catalog/SOP version editor and partner payout reconciliation reporting.
 
 ### Phase 5: Emergency Dispatcher Command Centre
 **Goal**: Deliver a low-latency Next.js Dispatcher interface with Exotel CTI caller ID mapping, sub-2-second ICE medical profile pull, live SLA countdown timers, ambulance dispatch, and hospital pre-brief workflows.
@@ -98,11 +98,12 @@ Plans:
   3. Dispatcher can trigger ambulance coordination and transmit pre-filled hospital briefing sheets in one click.
   4. Time-zone aware family escalation call tree automatically notifies family members.
   5. Emergency events close with structured resolution logs and roll up into SLA performance reports.
-**Plans**: 2 plans
+**Plans**: 3 plans
 
 Plans:
-- [ ] 05-01: Exotel CTI integration, WebSocket gateway, and sub-2-second ICE emergency profile display.
-- [ ] 05-02: Live SLA countdown timers, ambulance dispatch workflow, and family escalation call tree.
+- [x] 05-01: Exotel CTI integration, screen pop takeover, and sub-2-second ICE emergency profile display.
+- [x] 05-02: Live SLA countdown timers, tiered ambulance dispatch workflow, and clinical hospital pre-brief sheet.
+- [x] 05-03: Timezone-aware family escalation call tree, 4-state incident closure, and SLA audit analytics.
 
 ### Phase 6: Telephony Voice Ingestion & Integrations
 **Goal**: Deliver a dedicated voicemail line with Exotel + Google Cloud Speech-to-Text in Indian languages, LLM structured ticket extraction, ABHA sync monitoring, and Community Lead interface.

@@ -14,7 +14,8 @@ import {
   ChevronRight,
   Headphones,
   Compass,
-  Globe
+  Globe,
+  Database
 } from 'lucide-react';
 
 export const SidebarNav: React.FC = () => {
@@ -30,6 +31,7 @@ export const SidebarNav: React.FC = () => {
     { name: 'Community Stories', href: '/community', icon: Compass, badge: null, badgeColor: '' },
     { name: 'SOP & 90-Service Catalog', href: '/catalog', icon: FileCode2, badge: 'v1.2', badgeColor: 'bg-slate-100 text-slate-600' },
     { name: 'ABDM & Lab Integrations', href: '/integrations', icon: Globe, badge: 'M3 Active', badgeColor: 'bg-blue-50 text-blue-700 border-blue-200' },
+    { name: 'Database CRUD Admin', href: 'http://localhost:3005', icon: Database, badge: '18 Tables', badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
     { name: 'Payouts & TDS Ledger', href: '/payouts', icon: Wallet, badge: null, badgeColor: '' },
   ];
 

@@ -6,9 +6,13 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "prisma generate && tsc",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "ts-node prisma/seed.ts",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:seed": "ts-node prisma/seed.ts",
+    "seed": "ts-node prisma/seed.ts",
     "lint": "echo ok",
     "test": "vitest run",
     "test:unit": "vitest run"

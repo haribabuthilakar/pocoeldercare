@@ -32,3 +32,6 @@ yarn-error.log*
 .tmp/
 tmp/
 test.txt
+
+.agents/
+

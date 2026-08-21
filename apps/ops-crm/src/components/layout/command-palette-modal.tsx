@@ -15,6 +15,9 @@ interface SearchItem {
 const searchItems: SearchItem[] = [
   { id: 's0', title: '24x7 Emergency Dispatcher Command Console', subtitle: 'Live CTI Screen Pop & Tiered Ambulance Dispatch', category: 'PAGE', href: '/dispatcher' },
   { id: 's01', title: 'Emergency Response SLA Performance Analytics', subtitle: 'Golden Hour Metrics & Family Incident Post-Mortems', category: 'PAGE', href: '/dispatcher/analytics' },
+  { id: 's02', title: 'Vernacular Voice Helpline & LLM Ticket Hub', subtitle: 'Exotel Webhook & Google Cloud STT Regional Transcripts', category: 'PAGE', href: '/voice-tickets' },
+  { id: 's03', title: 'ABDM / ABHA Health Account Sync Panel', subtitle: 'National Health ID & Diagnostic Lab Webhooks', category: 'PAGE', href: '/integrations' },
+  { id: 's04', title: 'Community & Content Lead Mobile Story Logger', subtitle: 'Senior Social Moments & Family Digest Highlights', category: 'PAGE', href: '/community' },
   { id: 's1', title: 'Menon Family (Gopalakrishnan Menon, 79)', subtitle: 'Indiranagar, Bangalore East • Active Plan', category: 'HOUSEHOLD', href: '/households/hh-blr-001' },
   { id: 's2', title: 'Raghavan Family (Kalyani Raghavan, 82)', subtitle: 'Jayanagar, Bangalore South • Post-Op Rehab', category: 'HOUSEHOLD', href: '/households/hh-blr-001' },
   { id: 's3', title: 'Ramesh Kumar (Care Officer)', subtitle: 'Bangalore East • 26/35 Families • On-Duty', category: 'OFFICER', href: '/officers' },

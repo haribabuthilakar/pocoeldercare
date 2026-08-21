@@ -13,7 +13,8 @@ import {
   ShieldAlert,
   ChevronRight,
   Headphones,
-  Compass
+  Compass,
+  Globe
 } from 'lucide-react';
 
 export const SidebarNav: React.FC = () => {
@@ -22,10 +23,13 @@ export const SidebarNav: React.FC = () => {
   const primaryNav = [
     { name: 'Live Command', href: '/', icon: Activity, badge: '2 Live', badgeColor: 'bg-secondary-50 text-secondary-600 border-secondary-200 animate-pulse' },
     { name: '24x7 Emergency Dispatch', href: '/dispatcher', icon: ShieldAlert, badge: '🚨 24x7', badgeColor: 'bg-secondary-500 text-white font-black animate-pulse' },
+    { name: 'Vernacular Voice Hub', href: '/voice-tickets', icon: Headphones, badge: '4 New', badgeColor: 'bg-brand-50 text-brand-700 border-brand-200' },
     { name: 'Household 360 CRM', href: '/households/hh-blr-001', icon: Users, badge: null, badgeColor: '' },
     { name: 'Officer Fleet & Roster', href: '/officers', icon: UserCheck, badge: '18 Active', badgeColor: 'bg-brand-50 text-brand-700 border-brand-200' },
     { name: 'Partner & Doctor Panel', href: '/partners', icon: Stethoscope, badge: null, badgeColor: '' },
+    { name: 'Community Stories', href: '/community', icon: Compass, badge: null, badgeColor: '' },
     { name: 'SOP & 90-Service Catalog', href: '/catalog', icon: FileCode2, badge: 'v1.2', badgeColor: 'bg-slate-100 text-slate-600' },
+    { name: 'ABDM & Lab Integrations', href: '/integrations', icon: Globe, badge: 'M3 Active', badgeColor: 'bg-blue-50 text-blue-700 border-blue-200' },
     { name: 'Payouts & TDS Ledger', href: '/payouts', icon: Wallet, badge: null, badgeColor: '' },
   ];
 

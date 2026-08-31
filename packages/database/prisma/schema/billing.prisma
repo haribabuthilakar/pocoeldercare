@@ -1,0 +1,91 @@
+// Household Wallets, Immutable Ledger, Subscriptions, and Quotas
+
+enum BillingTransactionType {
+  QUOTA_DEBIT
+  WALLET_DEBIT
+  WALLET_CREDIT
+  HOLD_CREATE
+  HOLD_RELEASE
+  EMERGENCY_OVERDRAFT
+  REFUND
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAUSED
+  CANCELLED
+}
+
+enum BillingCycle {
+  MONTHLY
+  YEARLY
+}
+
+model HouseholdWallet {
+  id               String              @id @default(uuid())
+  householdId      String              @unique
+  balancePaise     Int                 @default(0)
+  creditLimitPaise Int                 @default(0)
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  household        Household           @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  transactions     WalletTransaction[]
+
+  @@map("household_wallets")
+}
+
+model WalletTransaction {
+  id                  String                 @id @default(uuid())
+  walletId            String
+  amountPaise         Int
+  balanceAfterPaise   Int
+  type                BillingTransactionType
+  description         String
+  referenceEntityType String?
+  referenceEntityId   String?
+  createdAt           DateTime               @default(now())
+
+  wallet              HouseholdWallet        @relation(fields: [walletId], references: [id], onDelete: Restrict)
+
+  @@index([walletId, createdAt(sort: Desc)])
+  @@map("wallet_transactions")
+}
+
+model HouseholdSubscription {
+  id                 String             @id @default(uuid())
+  householdId        String
+  packageVersionId   String
+  status             SubscriptionStatus @default(ACTIVE)
+  billingCycle       BillingCycle       @default(MONTHLY)
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  autoRenew          Boolean            @default(true)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  household          Household          @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  packageVersion     PackageVersion     @relation(fields: [packageVersionId], references: [id], onDelete: Restrict)
+  quotaAllocations   QuotaAllocation[]
+
+  @@index([householdId, status])
+  @@map("household_subscriptions")
+}
+
+model QuotaAllocation {
+  id                 String                @id @default(uuid())
+  subscriptionId     String
+  serviceCatalogId   String
+  allocatedUnits     Int
+  usedUnits          Int                   @default(0)
+  billingPeriodStart DateTime
+  billingPeriodEnd   DateTime
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+
+  subscription       HouseholdSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  serviceCatalog     ServiceCatalog        @relation(fields: [serviceCatalogId], references: [id], onDelete: Restrict)
+
+  @@unique([subscriptionId, serviceCatalogId, billingPeriodStart])
+  @@map("quota_allocations")
+}

@@ -1,0 +1,124 @@
+// Service Catalog, Immutable Versioning, SOP Steps, and Packages
+
+enum ServiceCategory {
+  CLINICAL
+  COMPANIONSHIP
+  LOGISTICS
+  EMERGENCY
+  HOUSEHOLD
+  ADVICE
+}
+
+enum SopProofType {
+  NONE
+  PHOTO
+  CHOICE
+  TEXT
+}
+
+enum PackageTier {
+  KAVACH
+  SAHARA
+  SAMPOORNA
+}
+
+model ServiceCatalog {
+  id                 String                  @id @default(uuid())
+  code               String                  @unique
+  name               String
+  category           ServiceCategory
+  defaultIsEmergency Boolean                 @default(false)
+  isActive           Boolean                 @default(true)
+  createdAt          DateTime                @default(now())
+  updatedAt          DateTime                @updatedAt
+
+  versions           ServiceCatalogVersion[]
+  packageQuotas      PackageServiceQuota[]
+  quotaAllocations   QuotaAllocation[]
+
+  @@map("service_catalogs")
+}
+
+model ServiceCatalogVersion {
+  id                       String           @id @default(uuid())
+  serviceCatalogId         String
+  version                  Int
+  pricePaise               Int
+  effectiveFrom            DateTime
+  effectiveTo              DateTime?
+  requiredCertifications   Json             @default("[]")
+  estimatedDurationMinutes Int              @default(60)
+  createdAt                DateTime         @default(now())
+
+  serviceCatalog           ServiceCatalog   @relation(fields: [serviceCatalogId], references: [id], onDelete: Restrict)
+  sopSteps                 SopStepVersion[]
+  serviceRequests          ServiceRequest[]
+
+  @@unique([serviceCatalogId, version])
+  @@map("service_catalog_versions")
+}
+
+model SopStepVersion {
+  id                      String                 @id @default(uuid())
+  serviceCatalogVersionId String
+  stepOrder               Int
+  title                   String
+  description             String?
+  isRequired              Boolean                @default(true)
+  proofType               SopProofType           @default(NONE)
+  choiceOptions           Json?
+  createdAt               DateTime               @default(now())
+
+  serviceCatalogVersion   ServiceCatalogVersion  @relation(fields: [serviceCatalogVersionId], references: [id], onDelete: Cascade)
+  sopProgressRecords      TicketSopProgress[]
+
+  @@unique([serviceCatalogVersionId, stepOrder])
+  @@map("sop_step_versions")
+}
+
+model Package {
+  id          String           @id @default(uuid())
+  code        String           @unique
+  name        String
+  tier        PackageTier
+  description String?
+  isActive    Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  versions    PackageVersion[]
+
+  @@map("packages")
+}
+
+model PackageVersion {
+  id                String                  @id @default(uuid())
+  packageId         String
+  version           Int
+  monthlyPricePaise Int
+  yearlyPricePaise  Int
+  effectiveFrom     DateTime
+  effectiveTo       DateTime?
+  createdAt         DateTime                @default(now())
+
+  package           Package                 @relation(fields: [packageId], references: [id], onDelete: Restrict)
+  serviceQuotas     PackageServiceQuota[]
+  subscriptions     HouseholdSubscription[]
+
+  @@unique([packageId, version])
+  @@map("package_versions")
+}
+
+model PackageServiceQuota {
+  id               String         @id @default(uuid())
+  packageVersionId String
+  serviceCatalogId String
+  monthlyUnits     Int
+  createdAt        DateTime       @default(now())
+
+  packageVersion   PackageVersion @relation(fields: [packageVersionId], references: [id], onDelete: Cascade)
+  serviceCatalog   ServiceCatalog @relation(fields: [serviceCatalogId], references: [id], onDelete: Restrict)
+
+  @@unique([packageVersionId, serviceCatalogId])
+  @@map("package_service_quotas")
+}

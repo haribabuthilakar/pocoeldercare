@@ -1,0 +1,111 @@
+// Care Officer Visit Logs, Leads, Onboarding Visits, and Senior Vitals
+
+enum LeadStage {
+  NEW
+  CONTACTED
+  VISIT_SCHEDULED
+  CONVERTED
+  LOST
+}
+
+enum VitalType {
+  BLOOD_PRESSURE
+  BLOOD_GLUCOSE
+  SPO2
+  HEART_RATE
+  BODY_TEMPERATURE
+  WEIGHT
+  FALL_ALERT
+}
+
+enum VitalSeverity {
+  NORMAL
+  ATTENTION
+  CRITICAL
+}
+
+enum VitalSource {
+  MANUAL
+  BLUETOOTH
+  WEARABLE_IOT
+  POCOCARE_EMR
+}
+
+model CareOfficerVisitLog {
+  id                 String              @id @default(uuid())
+  careOfficerId      String
+  householdId        String
+  ticketId           String?
+  checkInAt          DateTime
+  checkOutAt         DateTime?
+  checkInLat         Float
+  checkInLng         Float
+  distanceMeters     Int                 @default(0)
+  isGeofenceVerified Boolean             @default(false)
+  notes              String?
+  createdAt          DateTime            @default(now())
+
+  careOfficer        CareOfficerProfile  @relation(fields: [careOfficerId], references: [id], onDelete: Restrict)
+  household          Household           @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  ticket             Ticket?             @relation(fields: [ticketId], references: [id], onDelete: SetNull)
+
+  @@index([careOfficerId, checkInAt(sort: Desc)])
+  @@index([householdId, checkInAt(sort: Desc)])
+  @@map("care_officer_visit_logs")
+}
+
+model Lead {
+  id                    String            @id @default(uuid())
+  contactName           String
+  phone                 String
+  email                 String?
+  addressLine1          String?
+  city                  String?
+  state                 String?
+  postalCode            String?
+  stage                 LeadStage         @default(NEW)
+  notes                 String?
+  assignedOfficerId     String?
+  convertedHouseholdId  String?
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+
+  onboardingVisit       OnboardingVisit?
+
+  @@map("leads")
+}
+
+model OnboardingVisit {
+  id              String              @id @default(uuid())
+  leadId          String              @unique
+  careOfficerId   String
+  scheduledAt     DateTime
+  completedAt     DateTime?
+  assessmentNotes Json?
+  isCompleted     Boolean             @default(false)
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  lead            Lead                @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  careOfficer     CareOfficerProfile  @relation(fields: [careOfficerId], references: [id], onDelete: Restrict)
+
+  @@map("onboarding_visits")
+}
+
+model SeniorVitalReading {
+  id           String         @id @default(uuid())
+  seniorId     String
+  vitalType    VitalType
+  numericValue Float
+  unit         String
+  severity     VitalSeverity  @default(NORMAL)
+  notes        String?
+  source       VitalSource    @default(MANUAL)
+  recordedAt   DateTime       @default(now())
+  createdAt    DateTime       @default(now())
+
+  senior       Senior         @relation(fields: [seniorId], references: [id], onDelete: Cascade)
+
+  @@index([seniorId, recordedAt(sort: Desc)])
+  @@map("senior_vital_readings")
+}

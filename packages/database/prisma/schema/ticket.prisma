@@ -1,0 +1,114 @@
+// Tickets, Service Requests, Dual SLA, and SOP Execution Progress
+
+enum TicketStatus {
+  OPEN
+  ASSIGNED
+  IN_PROGRESS
+  WAITING_FAMILY_INPUT
+  WAITING_OPS_UPDATE
+  RESOLVED
+  CLOSED
+  CANCELLED
+}
+
+enum ServiceRequestStatus {
+  PENDING
+  ACCEPTED
+  IN_TRANSIT
+  ON_SITE
+  IN_PROGRESS
+  COMPLETED
+  EXCEPTION
+  CANCELLED
+}
+
+enum TicketPriority {
+  EMERGENCY
+  URGENT
+  ROUTINE
+}
+
+enum SlaStatus {
+  NORMAL
+  AT_RISK
+  BREACHED
+}
+
+enum TriageStatus {
+  PENDING_TRIAGE
+  CONFIRMED
+  DISMISSED
+  AUTO_CONVERTED
+}
+
+model Ticket {
+  id                    String              @id @default(uuid())
+  householdId           String
+  seniorId              String?
+  title                 String
+  description           String
+  category              String
+  priority              TicketPriority
+  status                TicketStatus        @default(OPEN)
+  slaStatus             SlaStatus           @default(NORMAL)
+  responseDueAt         DateTime
+  deliveryDueAt         DateTime
+  assignedCareOfficerId String?
+  triageStatus          TriageStatus?
+  resolvedAt            DateTime?
+  closedAt              DateTime?
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+
+  household             Household           @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  senior                Senior?             @relation(fields: [seniorId], references: [id], onDelete: SetNull)
+  assignedCareOfficer   CareOfficerProfile? @relation(fields: [assignedCareOfficerId], references: [id], onDelete: SetNull)
+  serviceRequests       ServiceRequest[]
+  activityFeedItems     ActivityFeedItem[]
+  visitLogs             CareOfficerVisitLog[]
+
+  @@index([slaStatus, responseDueAt])
+  @@index([householdId, createdAt(sort: Desc)])
+  @@index([assignedCareOfficerId, status])
+  @@map("tickets")
+}
+
+model ServiceRequest {
+  id                      String                @id @default(uuid())
+  ticketId                String
+  serviceCatalogVersionId String
+  status                  ServiceRequestStatus  @default(PENDING)
+  unitPricePaise          Int
+  assignedCareOfficerId   String?
+  completedAt             DateTime?
+  notes                   String?
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+
+  ticket                  Ticket                @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  serviceCatalogVersion   ServiceCatalogVersion @relation(fields: [serviceCatalogVersionId], references: [id], onDelete: Restrict)
+  assignedCareOfficer     CareOfficerProfile?   @relation(fields: [assignedCareOfficerId], references: [id], onDelete: SetNull)
+  sopProgress             TicketSopProgress[]
+
+  @@index([ticketId, status])
+  @@map("service_requests")
+}
+
+model TicketSopProgress {
+  id                String         @id @default(uuid())
+  serviceRequestId  String
+  sopStepVersionId  String
+  isCompleted       Boolean        @default(false)
+  completedAt       DateTime?
+  notes             String?
+  proofUrl          String?
+  choiceValue       String?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  serviceRequest    ServiceRequest @relation(fields: [serviceRequestId], references: [id], onDelete: Cascade)
+  sopStepVersion    SopStepVersion @relation(fields: [sopStepVersionId], references: [id], onDelete: Restrict)
+
+  @@unique([serviceRequestId, sopStepVersionId])
+  @@map("ticket_sop_progress")
+}

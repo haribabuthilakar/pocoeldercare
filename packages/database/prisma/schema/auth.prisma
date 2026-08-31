@@ -1,0 +1,76 @@
+// Two-Root Auth Schema: Person (external family/seniors) and InternalUser (staff)
+
+enum UserRole {
+  SUPER_ADMIN
+  OPS_MANAGER
+  CARE_MANAGER
+  CARE_OFFICER
+  SALES_LEAD
+}
+
+enum FamilyRole {
+  PRIMARY_CAREGIVER
+  SECONDARY_CAREGIVER
+  SENIOR
+  GUARDIAN
+}
+
+model Person {
+  id               String                 @id @default(uuid())
+  phone            String                 @unique
+  email            String?
+  name             String
+  deletedAt        DateTime?
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+
+  householdMemberships HouseholdMembership[]
+  escalationTiers      FamilyEscalationTier[]
+
+  @@map("persons")
+}
+
+model HouseholdMembership {
+  id               String      @id @default(uuid())
+  personId         String
+  householdId      String
+  role             FamilyRole  @default(PRIMARY_CAREGIVER)
+  isPrimaryContact Boolean     @default(false)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  person           Person      @relation(fields: [personId], references: [id], onDelete: Restrict)
+  household        Household   @relation(fields: [householdId], references: [id], onDelete: Cascade)
+
+  @@unique([personId, householdId])
+  @@map("household_memberships")
+}
+
+model InternalUser {
+  id                 String              @id @default(uuid())
+  email              String              @unique
+  passwordHash       String
+  name               String
+  phone              String?
+  isActive           Boolean             @default(true)
+  deletedAt          DateTime?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  roles              InternalUserRole[]
+  careOfficerProfile CareOfficerProfile?
+
+  @@map("internal_users")
+}
+
+model InternalUserRole {
+  id             String        @id @default(uuid())
+  internalUserId String
+  role           UserRole
+  createdAt      DateTime      @default(now())
+
+  internalUser   InternalUser  @relation(fields: [internalUserId], references: [id], onDelete: Cascade)
+
+  @@unique([internalUserId, role])
+  @@map("internal_user_roles")
+}

@@ -1,0 +1,84 @@
+// Household, Senior, Clinical Profile, and Escalation Tiers
+
+model Household {
+  id                    String                 @id @default(uuid())
+  name                  String
+  addressLine1          String
+  addressLine2          String?
+  city                  String
+  state                 String
+  postalCode            String
+  latitude              Float
+  longitude             Float
+  assignedCareOfficerId String?                @unique
+  deletedAt             DateTime?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+
+  assignedCareOfficer   CareOfficerProfile?    @relation(fields: [assignedCareOfficerId], references: [id], onDelete: SetNull)
+  memberships           HouseholdMembership[]
+  seniors               Senior[]
+  wallet                HouseholdWallet?
+  subscriptions         HouseholdSubscription[]
+  tickets               Ticket[]
+  activityFeed          ActivityFeedItem[]
+  escalationTiers       FamilyEscalationTier[]
+  visitLogs             CareOfficerVisitLog[]
+
+  @@map("households")
+}
+
+model Senior {
+  id             String                @id @default(uuid())
+  householdId    String
+  name           String
+  dateOfBirth    DateTime
+  gender         String
+  bloodGroup     String?
+  deletedAt      DateTime?
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+
+  household      Household             @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  medicalProfile SeniorMedicalProfile?
+  vitals         SeniorVitalReading[]
+  tickets        Ticket[]
+
+  @@map("seniors")
+}
+
+model SeniorMedicalProfile {
+  id                 String    @id @default(uuid())
+  seniorId           String    @unique
+  allergies          String[]  @default([])
+  chronicConditions  Json      @default("[]")
+  abhaId             String?
+  iceContactName     String
+  iceContactPhone    String
+  iceRelationship    String
+  pococarePatientId  String?
+  notes              String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  senior             Senior    @relation(fields: [seniorId], references: [id], onDelete: Cascade)
+
+  @@map("senior_medical_profiles")
+}
+
+model FamilyEscalationTier {
+  id             String    @id @default(uuid())
+  householdId    String
+  tierOrder      Int
+  personId       String
+  contactMethods String[]  @default(["SMS", "PHONE"])
+  delayMinutes   Int       @default(0)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  household      Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  person         Person    @relation(fields: [personId], references: [id], onDelete: Restrict)
+
+  @@unique([householdId, tierOrder])
+  @@map("family_escalation_tiers")
+}

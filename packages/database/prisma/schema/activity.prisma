@@ -1,0 +1,39 @@
+// Activity Feed and AI Triage Classification
+
+enum ActivityActorType {
+  PERSON
+  INTERNAL_USER
+  SYSTEM
+  AI_BOT
+}
+
+enum ActivityEventType {
+  MESSAGE
+  VISIT_REPORT
+  VITAL_ALERT
+  SYSTEM_EVENT
+  TICKET_UPDATE
+  BILLING_EVENT
+}
+
+model ActivityFeedItem {
+  id              String            @id @default(uuid())
+  householdId     String
+  actorType       ActivityActorType
+  actorId         String?
+  senderName      String
+  eventType       ActivityEventType
+  content         String
+  mediaUrls       String[]          @default([])
+  metadata        Json              @default("{}")
+  aiTriageStatus  TriageStatus?
+  aiTriageResult  Json?
+  linkedTicketId  String?
+  createdAt       DateTime          @default(now())
+
+  household       Household         @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  linkedTicket    Ticket?           @relation(fields: [linkedTicketId], references: [id], onDelete: SetNull)
+
+  @@index([householdId, createdAt(sort: Desc)])
+  @@map("activity_feed_items")
+}

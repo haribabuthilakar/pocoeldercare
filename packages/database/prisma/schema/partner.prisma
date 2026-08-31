@@ -1,0 +1,77 @@
+// Integration Partners, Webhook Events, and Media Attachments
+
+enum PartnerCode {
+  RAZORPAY
+  EXOTEL
+  POCOCARE_EMR
+  WEARABLE_IOT
+  APOLLO_1MG
+  MAX_HEALTHCARE
+  UBER_CARE
+  PORTER_LOGISTICS
+}
+
+enum PartnerCategory {
+  PAYMENT
+  TELEPHONY
+  HEALTHCARE_EMR
+  IOT_DEVICE
+  PHARMACY
+  HOSPITAL
+  TRANSPORT
+  LOGISTICS
+}
+
+enum PartnerStatus {
+  ACTIVE
+  DEGRADED
+  DOWN
+  MOCK_ONLY
+}
+
+enum WebhookEventStatus {
+  PENDING
+  PROCESSED
+  FAILED
+}
+
+model IntegrationPartner {
+  id           String          @id @default(uuid())
+  partnerCode  PartnerCode     @unique
+  name         String
+  category     PartnerCategory
+  status       PartnerStatus   @default(MOCK_ONLY)
+  mockSettings Json?
+  lastPingAt   DateTime?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@map("integration_partners")
+}
+
+model WebhookEvent {
+  id             String             @id @default(uuid())
+  source         PartnerCode
+  idempotencyKey String             @unique
+  payload        Json
+  status         WebhookEventStatus @default(PENDING)
+  errorMessage   String?
+  processedAt    DateTime?
+  createdAt      DateTime           @default(now())
+
+  @@map("webhook_events")
+}
+
+model MediaAttachment {
+  id         String   @id @default(uuid())
+  s3Key      String   @unique
+  mimeType   String
+  fileSize   Int
+  entityType String
+  entityId   String
+  uploaderId String
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@map("media_attachments")
+}

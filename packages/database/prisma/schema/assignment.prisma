@@ -1,0 +1,64 @@
+// Care Officer Profile, Reporting Lines, and Certifications
+
+enum CertificationStatus {
+  ACTIVE
+  EXPIRED
+  REVOKED
+}
+
+model CareOfficerProfile {
+  id                   String                    @id @default(uuid())
+  internalUserId       String                    @unique
+  managerId            String?
+  phone                String
+  isAvailable          Boolean                   @default(true)
+  homeBaseLat          Float
+  homeBaseLng          Float
+  clusterCode          String?
+  createdAt            DateTime                  @default(now())
+  updatedAt            DateTime                  @updatedAt
+
+  internalUser         InternalUser              @relation(fields: [internalUserId], references: [id], onDelete: Cascade)
+  manager              CareOfficerProfile?       @relation("CareOfficerReportingLine", fields: [managerId], references: [id], onDelete: SetNull)
+  directReports        CareOfficerProfile[]      @relation("CareOfficerReportingLine")
+  assignedHousehold    Household?
+  certifications       CareOfficerCertification[]
+  assignedTickets      Ticket[]
+  assignedServiceRequests ServiceRequest[]
+  visitLogs            CareOfficerVisitLog[]
+  onboardingVisits     OnboardingVisit[]
+
+  @@map("care_officer_profiles")
+}
+
+model Certification {
+  id                    String                    @id @default(uuid())
+  code                  String                    @unique
+  name                  String
+  description           String?
+  validityDays          Int
+  createdAt             DateTime                  @default(now())
+  updatedAt             DateTime                  @updatedAt
+
+  officerCertifications CareOfficerCertification[]
+
+  @@map("certifications")
+}
+
+model CareOfficerCertification {
+  id              String              @id @default(uuid())
+  careOfficerId   String
+  certificationId String
+  issuedAt        DateTime
+  expiresAt       DateTime
+  status          CertificationStatus @default(ACTIVE)
+  certificateUrl  String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  careOfficer     CareOfficerProfile  @relation(fields: [careOfficerId], references: [id], onDelete: Cascade)
+  certification   Certification       @relation(fields: [certificationId], references: [id], onDelete: Restrict)
+
+  @@unique([careOfficerId, certificationId])
+  @@map("care_officer_certifications")
+}

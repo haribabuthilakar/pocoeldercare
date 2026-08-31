@@ -1,0 +1,45 @@
+{
+  "name": "@poco/database",
+  "version": "0.0.0",
+  "description": "Database schema, migrations, seed runners, and typed Prisma Client singleton for Poco Elder Care",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "prisma"
+  ],
+  "scripts": {
+    "db:validate": "prisma validate --schema=./prisma/schema",
+    "db:format": "prisma format --schema=./prisma/schema",
+    "db:generate": "prisma generate --schema=./prisma/schema",
+    "db:migrate": "prisma migrate dev --schema=./prisma/schema",
+    "db:seed": "tsx src/seed.ts",
+    "db:seed:realistic": "tsx src/seeds/realistic.ts",
+    "build": "pnpm db:generate && tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist node_modules/.prisma"
+  },
+  "dependencies": {
+    "@poco/constants": "workspace:*",
+    "@poco/types": "workspace:*",
+    "@prisma/client": "^6.2.1",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@poco/tsconfig": "workspace:*",
+    "@types/node": "^22.10.2",
+    "prisma": "^6.2.1",
+    "tsup": "^8.3.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

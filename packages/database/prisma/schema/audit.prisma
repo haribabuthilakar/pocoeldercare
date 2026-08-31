@@ -1,0 +1,33 @@
+// Audit Logs and Dynamic System Configuration
+
+enum AuditActorType {
+  INTERNAL_USER
+  FAMILY_MEMBER
+  SYSTEM
+  PARTNER_WEBHOOK
+}
+
+model AuditLog {
+  id          String         @id @default(uuid())
+  actorType   AuditActorType
+  actorId     String
+  action      String
+  entityType  String
+  entityId    String
+  beforeState Json?
+  afterState  Json?
+  timestamp   DateTime       @default(now())
+
+  @@index([entityType, entityId])
+  @@index([actorId, timestamp(sort: Desc)])
+  @@map("audit_logs")
+}
+
+model SystemConfig {
+  id          String   @id @default(uuid())
+  configKey   String   @unique
+  configValue Json
+  updatedAt   DateTime @updatedAt
+
+  @@map("system_configs")
+}

@@ -11,3 +11,6 @@ export * from './triage/evaluator';
 export * from './vitals/evaluator';
 export * from './sop/validator';
 export * from './family/escalation';
+export * from './auth/jwt';
+export * from './auth/capabilities';
+export * from './auth/webhooks';

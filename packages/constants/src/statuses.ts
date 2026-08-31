@@ -121,3 +121,28 @@ export enum AuditActorType {
   SYSTEM = 'SYSTEM',
   PARTNER_WEBHOOK = 'PARTNER_WEBHOOK'
 }
+
+/**
+ * Lead pipeline stages.
+ */
+export enum LeadStage {
+  NEW = 'NEW',
+  CONTACTED = 'CONTACTED',
+  VISIT_SCHEDULED = 'VISIT_SCHEDULED',
+  CONVERTED = 'CONVERTED',
+  LOST = 'LOST'
+}
+
+export const LEAD_STAGES = Object.values(LeadStage) as readonly LeadStage[];
+
+/**
+ * SOP Step Proof Types.
+ */
+export enum SopProofType {
+  NONE = 'NONE',
+  PHOTO = 'PHOTO',
+  CHOICE = 'CHOICE',
+  TEXT = 'TEXT'
+}
+
+export const SOP_PROOF_TYPES = Object.values(SopProofType) as readonly SopProofType[];

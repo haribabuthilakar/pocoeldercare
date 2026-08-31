@@ -1,0 +1,38 @@
+{
+  "name": "@poco/admin-portal",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Next.js Admin Operations Portal for Poco Elder Care",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@poco/business-rules": "workspace:*",
+    "@poco/constants": "workspace:*",
+    "@poco/database": "workspace:*",
+    "@poco/design-tokens": "workspace:*",
+    "@poco/integrations": "workspace:*",
+    "@poco/types": "workspace:*",
+    "@poco/ui": "workspace:*",
+    "@poco/validation": "workspace:*",
+    "lucide-react": "^0.468.0",
+    "zod": "^3.24.1"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@poco/tsconfig": "workspace:*",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
+  }
+}

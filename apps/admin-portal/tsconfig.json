@@ -1,0 +1,9 @@
+{
+  "extends": "@poco/tsconfig/react.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "jsx": "react-jsx"
+  },
+  "include": ["src/**/*"]
+}

@@ -39,6 +39,9 @@ importers:
       '@poco/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      fast-check:
+        specifier: ^3.23.2
+        version: 3.23.2
       tsup:
         specifier: ^8.3.5
         version: 8.5.1(jiti@2.7.0)(postcss@8.5.26)(tsx@4.23.13)(typescript@5.9.3)

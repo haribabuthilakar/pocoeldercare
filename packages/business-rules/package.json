@@ -10,6 +10,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./testing": {
+      "types": "./dist/testing/index.d.ts",
+      "import": "./dist/testing/index.js",
+      "require": "./dist/testing/index.cjs"
     }
   },
   "files": [
@@ -20,6 +25,7 @@
     "dev": "tsup --watch",
     "test": "vitest run",
     "test:watch": "vitest",
+    "bench": "vitest bench",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
@@ -30,6 +36,7 @@
   },
   "devDependencies": {
     "@poco/tsconfig": "workspace:*",
+    "fast-check": "^3.23.2",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2",
     "vitest": "^3.0.5"

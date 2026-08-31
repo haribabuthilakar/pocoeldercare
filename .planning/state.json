@@ -1,0 +1,53 @@
+{
+  "contract": "1.0.0",
+  "flavor": "core",
+  "milestone": null,
+  "phases": [
+    {
+      "number": "1",
+      "name": "Monorepo Foundation, Prisma Schema & DRY Business Rules",
+      "status": "pending"
+    },
+    {
+      "number": "2",
+      "name": "Integration Partner Stubs & Interactive Mocks",
+      "status": "pending"
+    },
+    {
+      "number": "3",
+      "name": "Common NestJS Backend & Business Services",
+      "status": "pending"
+    },
+    {
+      "number": "4",
+      "name": "Realistic Seed Data & Backend Verification",
+      "status": "pending"
+    },
+    {
+      "number": "5",
+      "name": "Admin Portal (Next.js)",
+      "status": "pending"
+    },
+    {
+      "number": "6",
+      "name": "Field Mobile App (React Native & WatermelonDB)",
+      "status": "pending"
+    },
+    {
+      "number": "7",
+      "name": "Family Portal (Next.js)",
+      "status": "pending"
+    },
+    {
+      "number": "8",
+      "name": "End-to-End Testing & Single-Droplet Production Deployment",
+      "status": "pending"
+    }
+  ],
+  "next": {
+    "command": "/gsd-progress --next",
+    "label": "Advance to the next step",
+    "reason": "Phase 1 of 8 · 0% · executing"
+  },
+  "updated_at": "2026-08-31T11:00:15.999Z"
+}

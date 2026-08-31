@@ -2,14 +2,14 @@
   "name": "@poco/business-rules",
   "version": "0.0.0",
   "description": "Pure functional business logic, state machines, SLA calculators, and billing engines for Poco Elder Care",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     },
     "./testing": {
       "types": "./dist/testing/index.d.ts",

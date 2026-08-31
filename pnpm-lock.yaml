@@ -138,6 +138,43 @@ importers:
         specifier: ^2.31.0
         version: 2.32.0(@typescript-eslint/parser@8.68.0(eslint@10.9.1(jiti@2.7.0))(typescript@5.9.3))(eslint@10.9.1(jiti@2.7.0))
 
+  packages/integrations:
+    dependencies:
+      '@poco/business-rules':
+        specifier: workspace:*
+        version: link:../business-rules
+      '@poco/constants':
+        specifier: workspace:*
+        version: link:../constants
+      '@poco/database':
+        specifier: workspace:*
+        version: link:../database
+      '@poco/types':
+        specifier: workspace:*
+        version: link:../types
+      '@poco/validation':
+        specifier: workspace:*
+        version: link:../validation
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
+    devDependencies:
+      '@poco/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      tsup:
+        specifier: ^8.3.5
+        version: 8.5.1(jiti@2.7.0)(postcss@8.5.26)(tsx@4.23.13)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.5
+        version: 3.2.7(@types/node@22.20.1)(jiti@2.7.0)(tsx@4.23.13)
+
   packages/tsconfig: {}
 
   packages/types:

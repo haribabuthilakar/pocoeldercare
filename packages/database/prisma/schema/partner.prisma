@@ -3,10 +3,20 @@
 enum PartnerCode {
   RAZORPAY
   EXOTEL
+  POCOCARE
   POCOCARE_EMR
   WEARABLE_IOT
+  ABHA
+  WHATSAPP
+  ONE_MG
   APOLLO_1MG
+  ORANGE_LABS
+  HEALTH_SERVICES
   MAX_HEALTHCARE
+  INSTAMART
+  SWIGGY
+  URBAN_COMPANY
+  OLA
   UBER_CARE
   PORTER_LOGISTICS
 }
@@ -20,6 +30,11 @@ enum PartnerCategory {
   HOSPITAL
   TRANSPORT
   LOGISTICS
+  DIAGNOSTICS
+  MESSAGING
+  QUICK_COMMERCE
+  MEAL_DELIVERY
+  HOME_SERVICES
 }
 
 enum PartnerStatus {
@@ -62,6 +77,25 @@ model WebhookEvent {
   @@map("webhook_events")
 }
 
+model OutboundIntegrationCall {
+  id               String      @id @default(uuid())
+  partnerCode      PartnerCode
+  endpoint         String
+  requestPayload   Json
+  responseStatus   Int
+  durationMs       Int
+  errorMessage     String?
+  householdId      String?
+  ticketId         String?
+  serviceRequestId String?
+  createdAt        DateTime    @default(now())
+
+  @@index([partnerCode])
+  @@index([householdId])
+  @@index([ticketId])
+  @@map("outbound_integration_calls")
+}
+
 model MediaAttachment {
   id         String   @id @default(uuid())
   s3Key      String   @unique
@@ -75,3 +109,4 @@ model MediaAttachment {
   @@index([entityType, entityId])
   @@map("media_attachments")
 }
+

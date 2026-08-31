@@ -8,6 +8,8 @@ export * from './components/data-table';
 export * from './components/skeleton';
 export * from './components/form';
 export * from './components/empty-state';
-export * from './components/ice-badge';
 export * from './components/stepper';
+export * from './components/ice-badge';
+export * from './simulators';
 export * from './icons';
+

@@ -1,0 +1,37 @@
+{
+  "name": "@poco/business-rules",
+  "version": "0.0.0",
+  "description": "Pure functional business logic, state machines, SLA calculators, and billing engines for Poco Elder Care",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@poco/constants": "workspace:*",
+    "@poco/types": "workspace:*",
+    "date-fns": "^4.1.0"
+  },
+  "devDependencies": {
+    "@poco/tsconfig": "workspace:*",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^3.0.5"
+  }
+}

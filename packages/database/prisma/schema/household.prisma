@@ -58,11 +58,14 @@ model SeniorMedicalProfile {
   iceRelationship    String
   pococarePatientId  String?
   notes              String?
+  wearableDeviceId   String?
+  lastWearablePingAt DateTime?
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
 
   senior             Senior    @relation(fields: [seniorId], references: [id], onDelete: Cascade)
 
+  @@index([wearableDeviceId])
   @@map("senior_medical_profiles")
 }
 

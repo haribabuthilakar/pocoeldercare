@@ -24,6 +24,46 @@ importers:
         specifier: ^3.0.5
         version: 3.2.7(@types/node@22.20.1)(jiti@2.7.0)(tsx@4.23.13)
 
+  apps/api:
+    dependencies:
+      '@poco/business-rules':
+        specifier: workspace:*
+        version: link:../../packages/business-rules
+      '@poco/constants':
+        specifier: workspace:*
+        version: link:../../packages/constants
+      '@poco/database':
+        specifier: workspace:*
+        version: link:../../packages/database
+      '@poco/integrations':
+        specifier: workspace:*
+        version: link:../../packages/integrations
+      '@poco/types':
+        specifier: workspace:*
+        version: link:../../packages/types
+      '@poco/validation':
+        specifier: workspace:*
+        version: link:../../packages/validation
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
+    devDependencies:
+      '@poco/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      tsup:
+        specifier: ^8.3.5
+        version: 8.5.1(jiti@2.7.0)(postcss@8.5.26)(tsx@4.23.13)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.5
+        version: 3.2.7(@types/node@22.20.1)(jiti@2.7.0)(tsx@4.23.13)
+
   packages/business-rules:
     dependencies:
       '@poco/constants':

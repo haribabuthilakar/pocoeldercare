@@ -1,0 +1,30 @@
+{
+  "name": "@poco/api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared NestJS backend REST API and background worker for Poco Elder Care",
+  "main": "./dist/main.js",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "node dist/main.js",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@poco/business-rules": "workspace:*",
+    "@poco/constants": "workspace:*",
+    "@poco/database": "workspace:*",
+    "@poco/integrations": "workspace:*",
+    "@poco/types": "workspace:*",
+    "@poco/validation": "workspace:*",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@poco/tsconfig": "workspace:*",
+    "@types/node": "^22.10.2",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^3.0.5"
+  }
+}

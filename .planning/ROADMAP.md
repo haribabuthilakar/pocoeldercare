@@ -37,7 +37,7 @@ Poco Elder Care is built in a sequenced execution architecture: first constructi
   2. Interactive Razorpay payment checkout modal mock simulates successful and failed wallet top-ups.
   3. Interactive Exotel telephony modal mock simulates incoming phone-in calls and IVR events.
   4. Webhook ingestion handlers process simulated partner callbacks and wearable fall alerts.
-**Plans**: 2 plans
+**Plans**: 6 plans
 
 ### Phase 3: Common NestJS Backend & Business Services
 **Goal**: Implement the authoritative NestJS REST API, business service layer, in-process pg-boss background workers, and async AI message classification.

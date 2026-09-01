@@ -7,4 +7,4 @@ export * from './app/admin/integrations/components/scenario-preset-runner';
 export * from './app/admin/integrations/components/raw-payload-dispatcher';
 export * from './app/admin/integrations/components/outbound-call-audit-table';
 export * from './app/admin/integrations/components/webhook-event-log-table';
-export * from './app/admin/integrations/page';
+export { default as IntegrationsDashboardPage } from './app/admin/integrations/page';

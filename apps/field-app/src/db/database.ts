@@ -1,13 +1,13 @@
-import { appSchema, AppSchema } from './schema';
-import { HouseholdRecord, HouseholdModel } from './models/household';
-import { SeniorRecord, SeniorModel } from './models/senior';
-import { TicketRecord, TicketModel } from './models/ticket';
-import { ServiceRequestRecord, ServiceRequestModel } from './models/service-request';
-import { SopStepRecord, SopStepModel } from './models/sop-step';
-import { SopProgressRecord, SopProgressModel } from './models/sop-progress';
-import { ActivityFeedItemRecord, ActivityFeedItemModel } from './models/activity-feed-item';
-import { SyncOutboxRecord, SyncOutboxModel } from './models/sync-outbox';
-import { MediaUploadRecord, MediaUploadModel } from './models/media-upload';
+import { appSchema, type AppSchema } from './schema';
+import { type HouseholdRecord, HouseholdModel } from './models/household';
+import { type SeniorRecord, SeniorModel } from './models/senior';
+import { type TicketRecord, TicketModel } from './models/ticket';
+import { type ServiceRequestRecord, ServiceRequestModel } from './models/service-request';
+import { type SopStepRecord, SopStepModel } from './models/sop-step';
+import { type SopProgressRecord, SopProgressModel } from './models/sop-progress';
+import { type ActivityFeedItemRecord, ActivityFeedItemModel } from './models/activity-feed-item';
+import { type SyncOutboxRecord, SyncOutboxModel } from './models/sync-outbox';
+import { type MediaUploadRecord, MediaUploadModel } from './models/media-upload';
 
 export function generateUuid(): string {
   // RFC4122 v4 UUID generator

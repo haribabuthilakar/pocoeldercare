@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   DataTable,
-  ColumnDef,
+  type ColumnDef,
   Badge,
   Button,
   IceBadge,
@@ -39,7 +39,7 @@ export interface TriageTicketRow {
   createdAt: string;
 }
 
-export function OperationsTriageQueueView() {
+function OperationsTriageQueueView() {
   const queryClient = useQueryClient();
   const [selectedTicket, setSelectedTicket] = React.useState<TriageTicketRow | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);

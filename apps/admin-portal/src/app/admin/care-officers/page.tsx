@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   DataTable,
-  ColumnDef,
+  type ColumnDef,
   Badge,
   Button,
   Input,
@@ -17,12 +17,12 @@ import { Users, Search, Filter, RefreshCw, UserPlus, Eye, Network } from 'lucide
 import { UserRole } from '@poco/constants';
 import { apiClient } from '@/lib/api-client';
 import { useStaffUser } from '../providers';
-import { SupervisorTree, SupervisorNode } from './components/supervisor-tree';
-import { MediaViewerModal, MediaAsset } from './components/media-viewer-modal';
+import { SupervisorTree, type SupervisorNode } from './components/supervisor-tree';
+import { MediaViewerModal, type MediaAsset } from './components/media-viewer-modal';
 import {
   CareOfficerAssignmentModal,
-  OfficerCandidate,
-  HouseholdAssignmentTarget,
+  type OfficerCandidate,
+  type HouseholdAssignmentTarget,
 } from './components/assignment-modal';
 
 export interface CareOfficerRow {
@@ -53,7 +53,7 @@ export interface CareOfficerRow {
   }>;
 }
 
-export function CareOfficersRosterView() {
+function CareOfficersRosterView() {
   const queryClient = useQueryClient();
   const { user } = useStaffUser();
   const [searchQuery, setSearchQuery] = React.useState('');

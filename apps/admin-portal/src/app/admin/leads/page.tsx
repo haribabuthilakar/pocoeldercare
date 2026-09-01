@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   DataTable,
-  ColumnDef,
+  type ColumnDef,
   Badge,
   Button,
   EmptyState,
@@ -29,7 +29,7 @@ export interface LeadRow {
   convertedHouseholdId?: string | null;
 }
 
-export function LeadPipelineView() {
+function LeadPipelineView() {
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = React.useState('');
   const [stageFilter, setStageFilter] = React.useState<string>('ALL');

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useMutation } from '@tanstack/react-query';
 import {
   DataTable,
-  ColumnDef,
+  type ColumnDef,
   Badge,
   Button,
   EmptyState,

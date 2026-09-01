@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { syncEngine, SyncConflict, SyncEngineState } from '../../sync/sync-engine';
+import { syncEngine, type SyncConflict, type SyncEngineState } from '../../sync/sync-engine';
 import {
   AlertTriangle,
   CheckCircle2,

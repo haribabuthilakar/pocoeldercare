@@ -3,12 +3,28 @@
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "./dist",
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "allowJs": true,
+    "noEmit": true,
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["src/**/*", "test/**/*"]
+  "include": [
+    "src/**/*",
+    "test/**/*",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
-

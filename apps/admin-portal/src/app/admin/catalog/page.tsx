@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   DataTable,
-  ColumnDef,
+  type ColumnDef,
   Badge,
   Button,
   EmptyState,
@@ -15,11 +15,11 @@ import { SopProofType } from '@poco/constants';
 import { apiClient } from '@/lib/api-client';
 import {
   CatalogEditorDrawer,
-  CatalogServiceItem,
+  type CatalogServiceItem,
 } from './components/catalog-editor-drawer';
 import {
   HistoricalVersionSelector,
-  ServiceVersionHistoryItem,
+  type ServiceVersionHistoryItem,
 } from './components/historical-version-selector';
 
 export interface ServiceCatalogRow extends CatalogServiceItem {
@@ -27,7 +27,7 @@ export interface ServiceCatalogRow extends CatalogServiceItem {
   activeSubscriberCount: number;
 }
 
-export function ServiceCatalogStudioView() {
+function ServiceCatalogStudioView() {
   const queryClient = useQueryClient();
   const [selectedService, setSelectedService] = React.useState<CatalogServiceItem | null>(null);
   const [isEditorOpen, setIsEditorOpen] = React.useState(false);
@@ -116,7 +116,7 @@ export function ServiceCatalogStudioView() {
             className="h-7 text-xs px-2"
             onClick={() => {
               setInspectingServiceId((prev) => (prev === row.id ? null : row.id));
-              if (row.versions && row.versions.length > 0) {
+              if (row.versions && row.versions.length > 0 && row.versions[0]) {
                 setSelectedHistoryVersionId(row.versions[0].id);
               }
             }}
@@ -172,7 +172,7 @@ export function ServiceCatalogStudioView() {
       {inspectingService && inspectingService.versions && (
         <HistoricalVersionSelector
           versions={inspectingService.versions}
-          selectedVersionId={selectedHistoryVersionId || inspectingService.versions[0]?.id}
+          selectedVersionId={selectedHistoryVersionId || inspectingService.versions[0]?.id || ''}
           onSelectVersion={setSelectedHistoryVersionId}
         />
       )}

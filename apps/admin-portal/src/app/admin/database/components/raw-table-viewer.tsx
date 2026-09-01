@@ -3,7 +3,7 @@
 import * as React from 'react';
 import {
   DataTable,
-  ColumnDef,
+  type ColumnDef,
   Badge,
   Button,
   EmptyState,

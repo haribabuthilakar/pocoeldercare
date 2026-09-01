@@ -27,7 +27,7 @@ describe('Guided Sequential SOP Wizard & Exception Suite', () => {
 
   describe('SopStepCard Component', () => {
     it('renders step details, mandatory badge, and choice options', () => {
-      const stepChoice = new SopStepModel(mockSopSteps[2]); // Medication inventory choice step
+      const stepChoice = new SopStepModel(mockSopSteps[2]!); // Medication inventory choice step
       const onSave = vi.fn().mockResolvedValue(undefined);
 
       render(
@@ -44,7 +44,7 @@ describe('Guided Sequential SOP Wizard & Exception Suite', () => {
     });
 
     it('toggles completion status and submits progress with choice and notes', async () => {
-      const stepChoice = new SopStepModel(mockSopSteps[2]);
+      const stepChoice = new SopStepModel(mockSopSteps[2]!);
       const onSave = vi.fn().mockResolvedValue(undefined);
 
       render(

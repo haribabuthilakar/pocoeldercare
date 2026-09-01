@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   DataTable,
-  ColumnDef,
+  type ColumnDef,
   Badge,
   Button,
   EmptyState,
@@ -37,7 +37,7 @@ export interface SlaRiskRow {
   deliveryDueAt?: string;
 }
 
-export function SlaRiskQueueView() {
+function SlaRiskQueueView() {
   const queryClient = useQueryClient();
   const [actionMessage, setActionMessage] = React.useState<string | null>(null);
 

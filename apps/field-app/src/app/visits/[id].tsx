@@ -40,8 +40,8 @@ export const VisitDetailScreen: React.FC<VisitDetailScreenProps> = ({
       const seniors = await database.seniors.query();
 
       setServiceRequest(sr);
-      if (households.length > 0) setHousehold(households[0]);
-      if (seniors.length > 0) setSenior(seniors[0]);
+      if (households.length > 0) setHousehold(households[0] || null);
+      if (seniors.length > 0) setSenior(seniors[0] || null);
     } finally {
       setIsLoading(false);
     }

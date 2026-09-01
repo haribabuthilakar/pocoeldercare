@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   DataTable,
-  ColumnDef,
+  type ColumnDef,
   Badge,
   Button,
   Card,
@@ -27,11 +27,11 @@ import { BillingTransactionType } from '@poco/constants';
 import { apiClient } from '@/lib/api-client';
 import {
   NegativeBalanceTable,
-  OverdraftHouseholdRow,
+  type OverdraftHouseholdRow,
 } from './components/negative-balance-table';
 import {
   InvoiceViewerModal,
-  InvoiceStatement,
+  type InvoiceStatement,
 } from './components/invoice-viewer-modal';
 
 export interface BillingOverviewData {
@@ -51,7 +51,7 @@ export interface BillingOverviewData {
   }>;
 }
 
-export function BillingDashboardView() {
+function BillingDashboardView() {
   const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = React.useState<'overview' | 'overdrafts' | 'ledger'>(
     'overview'

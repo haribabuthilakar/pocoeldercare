@@ -45,7 +45,7 @@ type ActiveTab =
   | 'outbound_logs'
   | 'webhook_events';
 
-export function IntegrationsDashboardPage() {
+function IntegrationsDashboardPage() {
   const [partners, setPartners] = React.useState<PartnerHealthItem[]>([]);
   const [selectedPartner, setSelectedPartner] = React.useState<PartnerHealthItem | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);

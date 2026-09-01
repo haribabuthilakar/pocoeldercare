@@ -193,7 +193,7 @@ describe('Visit Lifecycle & Geofence Verification Suite', () => {
 
       const outbox = await database.syncOutbox.query();
       expect(outbox.length).toBeGreaterThan(0);
-      expect(outbox[0].mutationType).toBe('STATUS_TRANSITION');
+      expect(outbox[0]?.mutationType).toBe('STATUS_TRANSITION');
     });
   });
 });

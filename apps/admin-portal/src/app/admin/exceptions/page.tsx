@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   DataTable,
-  ColumnDef,
+  type ColumnDef,
   Badge,
   Button,
   EmptyState,
@@ -15,7 +15,7 @@ import { TicketPriority, TicketStatus, ServiceRequestStatus } from '@poco/consta
 import { apiClient } from '@/lib/api-client';
 import {
   RollupResolutionModal,
-  ChildRequestNode,
+  type ChildRequestNode,
 } from './components/rollup-resolution-modal';
 
 export interface RollupExceptionRow {
@@ -40,7 +40,7 @@ export interface RollupExceptionRow {
   }>;
 }
 
-export function RollupExceptionsQueueView() {
+function RollupExceptionsQueueView() {
   const queryClient = useQueryClient();
   const [selectedTicket, setSelectedTicket] = React.useState<RollupExceptionRow | null>(null);
   const [isModalOpen, setIsModalOpen] = React.useState(false);

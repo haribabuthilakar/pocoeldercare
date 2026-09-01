@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { syncEngine, SyncEngineState } from '../../sync/sync-engine';
+import { syncEngine, type SyncEngineState } from '../../sync/sync-engine';
 import { RefreshCw, CheckCircle2, AlertTriangle, WifiOff, Clock } from 'lucide-react';
 
 export interface SyncStatusPillProps {

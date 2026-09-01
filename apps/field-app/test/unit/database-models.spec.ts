@@ -31,8 +31,8 @@ describe('WatermelonDB Schema & Domain Models Suite', () => {
 
       expectedTables.forEach((table) => {
         expect(appSchema.tables[table]).toBeDefined();
-        expect(appSchema.tables[table].name).toBe(table);
-        expect(appSchema.tables[table].columns.length).toBeGreaterThan(0);
+        expect(appSchema.tables[table]?.name).toBe(table);
+        expect(appSchema.tables[table]?.columns.length).toBeGreaterThan(0);
       });
     });
 
@@ -77,17 +77,17 @@ describe('WatermelonDB Schema & Domain Models Suite', () => {
         (t) => t.assigned_care_officer_id === 'co_prof_001',
       );
       expect(tickets.length).toBe(1);
-      expect(tickets[0].category).toBe('ROUTINE_CHECKUP');
-      expect(tickets[0].status).toBe('IN_PROGRESS');
+      expect(tickets[0]?.category).toBe('ROUTINE_CHECKUP');
+      expect(tickets[0]?.status).toBe('IN_PROGRESS');
     });
 
     it('queries and orders SOP steps by step_index', async () => {
       const steps = await database.sopSteps.query((s) => s.sop_version_id === 'sop_vitals_v1');
       expect(steps.length).toBe(4);
-      expect(steps[0].title).toBe('Senior Identity Verification & Greeting');
-      expect(steps[1].inputType).toBe('VITALS');
-      expect(steps[2].inputType).toBe('CHOICE');
-      expect(steps[3].inputType).toBe('PHOTO');
+      expect(steps[0]?.title).toBe('Senior Identity Verification & Greeting');
+      expect(steps[1]?.inputType).toBe('VITALS');
+      expect(steps[2]?.inputType).toBe('CHOICE');
+      expect(steps[3]?.inputType).toBe('PHOTO');
     });
 
     it('supports updates and deletions on collections', async () => {

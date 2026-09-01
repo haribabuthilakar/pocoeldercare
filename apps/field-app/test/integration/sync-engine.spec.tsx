@@ -62,8 +62,8 @@ describe('Two-Phase Batch Sync Engine & Conflict Review Suite', () => {
 
       const state = syncEngine.getState();
       expect(state.conflicts.length).toBe(1);
-      expect(state.conflicts[0].id).toBe(mutation.id);
-      expect(state.conflicts[0].errorMessage).toContain('Entity was modified by Operations');
+      expect(state.conflicts[0]?.id).toBe(mutation.id);
+      expect(state.conflicts[0]?.errorMessage).toContain('Entity was modified by Operations');
 
       const outboxItem = await database.syncOutbox.find(mutation.id);
       expect(outboxItem?.status).toBe('CONFLICT');

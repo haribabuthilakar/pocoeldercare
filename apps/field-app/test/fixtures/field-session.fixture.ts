@@ -1,4 +1,5 @@
 import type { InternalJwtPayload } from '@poco/types';
+import { UserRole } from '@poco/constants';
 
 export interface CareOfficerSession {
   user: InternalJwtPayload;
@@ -15,7 +16,7 @@ export interface CareOfficerSession {
 export const mockCareOfficerUser: InternalJwtPayload = {
   sub: 'usr_co_001',
   email: 'care.officer.1@poco.care',
-  roles: ['CareOfficer'],
+  roles: [UserRole.CARE_OFFICER],
   tokenType: 'INTERNAL',
   assignedTerritories: ['BLR-SOUTH-01'],
 };

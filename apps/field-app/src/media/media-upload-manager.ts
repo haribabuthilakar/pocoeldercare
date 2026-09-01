@@ -13,6 +13,7 @@ export type MediaUploadListener = (uploads: MediaUploadModel[]) => void;
 
 export class MediaUploadManager {
   private isProcessing: boolean = false;
+  private currentProcessingPromise: Promise<{ completed: number; failed: number }> | null = null;
   private listeners: Set<MediaUploadListener> = new Set();
   private mockUploader?: (
     localUri: string,
@@ -75,78 +76,85 @@ export class MediaUploadManager {
   }
 
   public async processQueue(): Promise<{ completed: number; failed: number }> {
-    if (this.isProcessing) return { completed: 0, failed: 0 };
+    if (this.currentProcessingPromise) {
+      return this.currentProcessingPromise;
+    }
     if (!syncEngine.getState().isOnline) return { completed: 0, failed: 0 };
 
-    this.isProcessing = true;
-    let completed = 0;
-    let failed = 0;
+    this.currentProcessingPromise = (async () => {
+      this.isProcessing = true;
+      let completed = 0;
+      let failed = 0;
 
-    try {
-      const pendingUploads = await database.mediaUploads.query(
-        (u) => u.status === 'PENDING' || u.status === 'FAILED',
-      );
+      try {
+        const pendingUploads = await database.mediaUploads.query(
+          (u) => u.status === 'PENDING' || u.status === 'FAILED',
+        );
 
-      for (const upload of pendingUploads) {
-        try {
-          await database.mediaUploads.update(upload.id, {
-            status: 'UPLOADING',
-            progress: 10,
-          });
-          this.notify();
-
-          let uploadResult: { s3Key: string; publicUrl: string };
-
-          if (this.mockUploader) {
-            uploadResult = await this.mockUploader(upload.localUri, async (prog) => {
-              await database.mediaUploads.update(upload.id, { progress: prog });
-              this.notify();
+        for (const upload of pendingUploads) {
+          try {
+            await database.mediaUploads.update(upload.id, {
+              status: 'UPLOADING',
+              progress: 10,
             });
-          } else {
-            // Default realistic S3 direct presigned PUT simulation
-            uploadResult = await this.defaultUploadHandler(upload.localUri, async (prog) => {
-              await database.mediaUploads.update(upload.id, { progress: prog });
-              this.notify();
+            this.notify();
+
+            let uploadResult: { s3Key: string; publicUrl: string };
+
+            if (this.mockUploader) {
+              uploadResult = await this.mockUploader(upload.localUri, async (prog) => {
+                await database.mediaUploads.update(upload.id, { progress: prog });
+                this.notify();
+              });
+            } else {
+              // Default realistic S3 direct presigned PUT simulation
+              uploadResult = await this.defaultUploadHandler(upload.localUri, async (prog) => {
+                await database.mediaUploads.update(upload.id, { progress: prog });
+                this.notify();
+              });
+            }
+
+            // Mark upload completed
+            await database.mediaUploads.update(upload.id, {
+              status: 'COMPLETED',
+              progress: 100,
+              s3_key: uploadResult.s3Key,
+              presigned_url: uploadResult.publicUrl,
             });
+
+            // Link public URL back to parent entity (e.g. SopProgress)
+            if (upload.entityType === 'sop_progress') {
+              await database.sopProgress.update(upload.entityId, {
+                proof_url: uploadResult.publicUrl,
+                synced: false,
+              });
+
+              // Stage sync mutation
+              await database.stageMutation('SOP_PROGRESS', 'sop_progress', upload.entityId, {
+                proofUrl: uploadResult.publicUrl,
+                s3Key: uploadResult.s3Key,
+              });
+            }
+
+            completed++;
+          } catch {
+            await database.mediaUploads.update(upload.id, {
+              status: 'FAILED',
+              progress: 0,
+            });
+            failed++;
           }
-
-          // Mark upload completed
-          await database.mediaUploads.update(upload.id, {
-            status: 'COMPLETED',
-            progress: 100,
-            s3_key: uploadResult.s3Key,
-            presigned_url: uploadResult.publicUrl,
-          });
-
-          // Link public URL back to parent entity (e.g. SopProgress)
-          if (upload.entityType === 'sop_progress') {
-            await database.sopProgress.update(upload.entityId, {
-              proof_url: uploadResult.publicUrl,
-              synced: false,
-            });
-
-            // Stage sync mutation
-            await database.stageMutation('SOP_PROGRESS', 'sop_progress', upload.entityId, {
-              proofUrl: uploadResult.publicUrl,
-              s3Key: uploadResult.s3Key,
-            });
-          }
-
-          completed++;
-        } catch {
-          await database.mediaUploads.update(upload.id, {
-            status: 'FAILED',
-            progress: 0,
-          });
-          failed++;
         }
+      } finally {
+        this.isProcessing = false;
+        this.currentProcessingPromise = null;
+        this.notify();
       }
-    } finally {
-      this.isProcessing = false;
-      this.notify();
-    }
 
-    return { completed, failed };
+      return { completed, failed };
+    })();
+
+    return this.currentProcessingPromise;
   }
 
   private async defaultUploadHandler(

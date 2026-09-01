@@ -19,7 +19,6 @@ const STAGE_CONFIG: Record<
   [LeadStage.NEW]: { label: 'New Lead', variant: 'secondary' },
   [LeadStage.CONTACTED]: { label: 'Contacted', variant: 'outline' },
   [LeadStage.VISIT_SCHEDULED]: { label: 'Visit Scheduled', variant: 'warning' },
-  [LeadStage.ONBOARDING_PENDING]: { label: 'Onboarding Pending', variant: 'warning' },
   [LeadStage.CONVERTED]: { label: 'Converted (CS Handoff)', variant: 'primary' },
   [LeadStage.LOST]: { label: 'Lost', variant: 'destructive' },
 };
@@ -71,7 +70,7 @@ export function LeadStageDropdown({
             ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
             : stage === LeadStage.LOST
             ? 'bg-rose-50 text-rose-800 border-rose-300'
-            : stage === LeadStage.ONBOARDING_PENDING || stage === LeadStage.VISIT_SCHEDULED
+            : stage === LeadStage.VISIT_SCHEDULED
             ? 'bg-amber-50 text-amber-800 border-amber-300'
             : 'bg-slate-50 text-slate-700 border-slate-300'
         )}

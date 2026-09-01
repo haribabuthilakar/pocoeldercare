@@ -225,7 +225,6 @@ function LeadPipelineView() {
             <option value={LeadStage.NEW}>New Leads</option>
             <option value={LeadStage.CONTACTED}>Contacted</option>
             <option value={LeadStage.VISIT_SCHEDULED}>Visit Scheduled</option>
-            <option value={LeadStage.ONBOARDING_PENDING}>Onboarding Pending</option>
             <option value={LeadStage.CONVERTED}>Converted</option>
             <option value={LeadStage.LOST}>Lost</option>
           </select>

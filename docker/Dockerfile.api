@@ -1,0 +1,41 @@
+# Multi-stage Dockerfile for Poco Elder Care API & Background Worker
+FROM node:22-alpine AS base
+
+RUN apk add --no-cache libc6-compat openssl
+RUN corepack enable && corepack prepare pnpm@10.30.1 --activate
+
+WORKDIR /app
+
+# Copy root manifest files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+
+# Copy all packages & apps
+COPY packages ./packages
+COPY apps/api ./apps/api
+COPY apps/admin-portal ./apps/admin-portal
+COPY apps/field-app ./apps/field-app
+
+# Install all monorepo dependencies
+RUN pnpm install --frozen-lockfile
+
+# Generate Prisma Client & build workspace dependencies and API
+RUN pnpm --filter @poco/database db:generate
+RUN pnpm --filter @poco/api... build
+
+# Production runtime stage
+FROM node:22-alpine AS runner
+
+RUN apk add --no-cache libc6-compat openssl
+RUN corepack enable && corepack prepare pnpm@10.30.1 --activate
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV PORT=4000
+
+# Copy workspace and build artifacts
+COPY --from=base /app ./
+
+EXPOSE 4000
+
+CMD ["node", "apps/api/dist/main.js"]

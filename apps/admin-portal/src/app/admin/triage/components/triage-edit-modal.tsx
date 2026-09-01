@@ -89,7 +89,7 @@ export function TriageEditModal({
   const [items, setItems] = React.useState<ServiceRequestDraft[]>([
     {
       serviceCatalogVersionId:
-        ticket?.suggestedServiceVersionId || fallbackCatalogOptions[0].currentVersionId,
+        ticket?.suggestedServiceVersionId || fallbackCatalogOptions[0]?.currentVersionId || 'sv-version-general-01',
       notes: '',
     },
   ]);

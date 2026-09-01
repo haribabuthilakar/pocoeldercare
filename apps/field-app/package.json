@@ -6,6 +6,7 @@
   "main": "./src/index.ts",
   "scripts": {
     "build": "tsup",
+    "start": "node dist/server.js",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

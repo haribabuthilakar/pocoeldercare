@@ -6,13 +6,13 @@ services:
     container_name: poco-prod-postgres
     restart: always
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres_secure_password_2026}
+      POSTGRES_DB: ${POSTGRES_DB:-poco_eldercare}
     volumes:
       - poco_prod_pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-poco_eldercare}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -36,10 +36,12 @@ services:
       NODE_ENV: production
       NODE_OPTIONS: "--max-old-space-size=300"
       PORT: 4000
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
-      JWT_SECRET: ${JWT_SECRET}
-      INTERNAL_JWT_SECRET: ${INTERNAL_JWT_SECRET}
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      DATABASE_URL: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres_secure_password_2026}@postgres:5432/${POSTGRES_DB:-poco_eldercare}?schema=public
+      JWT_SECRET: ${JWT_SECRET:-poco-external-jwt-secret-key-development-2026-min-32-chars}
+      INTERNAL_JWT_SECRET: ${INTERNAL_JWT_SECRET:-poco-internal-jwt-secret-key-development-2026-min-32-chars}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    ports:
+      - "4000:4000"
     depends_on:
       postgres:
         condition: service_healthy
@@ -62,11 +64,39 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3000
-      NEXT_PUBLIC_API_BASE_URL: https://app.pocoeldercare.com/api
+      NEXT_PUBLIC_API_BASE_URL: http://168.144.187.23/api
+    depends_on:
+      - backend
     deploy:
       resources:
         limits:
-          memory: 200M
+          memory: 180M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  field-app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.field
+    container_name: poco-prod-field
+    restart: always
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      HOST: 0.0.0.0
+      NEXT_PUBLIC_API_BASE_URL: http://168.144.187.23/api
+      API_BASE_URL: http://backend:4000/api
+    ports:
+      - "3001:3001"
+    depends_on:
+      - backend
+    deploy:
+      resources:
+        limits:
+          memory: 120M
     logging:
       driver: "json-file"
       options:
@@ -79,13 +109,12 @@ services:
     restart: always
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - backend
       - web
+      - field-app
     deploy:
       resources:
         limits:

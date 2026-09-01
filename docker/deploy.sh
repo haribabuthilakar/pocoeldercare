@@ -16,7 +16,7 @@ fi
 
 # 2. Pull latest git changes
 echo "📥 Pulling latest git repository updates..."
-git pull origin master
+git pull origin main || git pull origin master
 
 # 3. Build & launch production containers
 echo "🐳 Deploying production Docker Compose stack..."

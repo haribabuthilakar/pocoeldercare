@@ -58,13 +58,13 @@
 
 ### Billing, Quotas & Household Wallet Engine
 
-- [ ] **BILL-01**: Each household has exactly one dedicated digital wallet with a ledger audit trail (`WalletTransaction`).
-- [ ] **BILL-02**: Service usage first decrements available `QuotaUsage` against the household's active package quota for the active billing cycle.
-- [ ] **BILL-03**: For out-of-quota or pay-per-use services, emergency services (catalog default or ops override) auto-debit the wallet, allowing negative balances.
-- [ ] **BILL-04**: For non-emergency user-requested services, the system auto-debits the wallet if balance is sufficient.
-- [ ] **BILL-05**: For services with insufficient balance or staff-suggested services, the system places the request in `Pending Approval` and notifies the family.
-- [ ] **BILL-06**: Family members can initiate wallet top-ups via the Razorpay payment gateway integration mock.
-- [ ] **BILL-07**: System generates downloadable invoices for all subscription renewals and wallet transactions.
+- [x] **BILL-01**: Each household has exactly one dedicated digital wallet with a ledger audit trail (`WalletTransaction`).
+- [x] **BILL-02**: Service usage first decrements available `QuotaUsage` against the household's active package quota for the active billing cycle.
+- [x] **BILL-03**: For out-of-quota or pay-per-use services, emergency services (catalog default or ops override) auto-debit the wallet, allowing negative balances.
+- [x] **BILL-04**: For non-emergency user-requested services, the system auto-debits the wallet if balance is sufficient.
+- [x] **BILL-05**: For services with insufficient balance or staff-suggested services, the system places the request in `Pending Approval` and notifies the family.
+- [x] **BILL-06**: Family members can initiate wallet top-ups via the Razorpay payment gateway integration mock.
+- [x] **BILL-07**: System generates downloadable invoices for all subscription renewals and wallet transactions.
 
 ### Unified Activity Feed & Async AI Classification
 

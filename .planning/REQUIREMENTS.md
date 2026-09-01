@@ -88,11 +88,11 @@
 
 ### Admin Portal & Operations Queues
 
-- [ ] **ADMN-01**: Admin Portal provides high-density, keyboard-friendly queues for `Pending Triage`, `Waiting Ops Update`, and `SLA At Risk` tickets.
-- [ ] **ADMN-02**: Operations Executives can apply emergency overrides and reassign dynamic service request owners across workflow stages.
-- [ ] **ADMN-03**: Care Officer Manager interface enables household assignments with automated pre-assignment certification checks.
-- [ ] **ADMN-04**: Admin Portal provides a lead pipeline management view with Sales-to-CS ownership transitions and payment reminder triggers.
-- [ ] **ADMN-05**: Admin Portal provides a read-only, paginated raw database table viewer for administrative inspection.
+- [x] **ADMN-01**: Admin Portal provides high-density, keyboard-friendly queues for `Pending Triage`, `Waiting Ops Update`, and `SLA At Risk` tickets.
+- [x] **ADMN-02**: Operations Executives can apply emergency overrides and reassign dynamic service request owners across workflow stages.
+- [x] **ADMN-03**: Care Officer Manager interface enables household assignments with automated pre-assignment certification checks.
+- [x] **ADMN-04**: Admin Portal provides a lead pipeline management view with Sales-to-CS ownership transitions and payment reminder triggers.
+- [x] **ADMN-05**: Admin Portal provides a read-only, paginated raw database table viewer for administrative inspection.
 
 ### 12-Partner Integration Stubs & Interactive UI Mocks
 
@@ -100,14 +100,14 @@
 - [ ] **INTG-02**: System provides interactive frontend modal mocks for Razorpay payment checkout and Exotel telephony IVR.
 - [ ] **INTG-03**: Hourly healthy wearable ping webhooks are ingested silently; missed pings automatically generate an alert ticket for operations.
 - [ ] **INTG-04**: Real-time wearable fall alert webhooks immediately auto-create an emergency ticket and trigger ops alerting.
-- [ ] **INTG-05**: Admin Portal integration management interface displays stub health, allows JSON stub config editing, and supports sending test payloads.
+- [x] **INTG-05**: Admin Portal integration management interface displays stub health, allows JSON stub config editing, and supports sending test payloads.
 
 ### Testing Harness, Seed Data & Droplet Deployment
 
 - [x] **TEST-01**: Database seed script populates >=2 users per internal role, ~50 care officers, and ~200 households (1-4 seniors each) with realistic clinical/financial data.
 - [x] **TEST-02**: Comprehensive Vitest unit and integration test suite verifies state machines, SLA timers, billing rules, and RBAC security.
 - [ ] **TEST-03**: Playwright end-to-end test suite covers complete customer journeys across Family Portal, Field App, and Admin Portal.
-- [ ] **TEST-04**: Admin Portal includes a test runner dashboard displaying test execution history, status, and failed background jobs.
+- [x] **TEST-04**: Admin Portal includes a test runner dashboard displaying test execution history, status, and failed background jobs.
 - [ ] **TEST-05**: Single Docker Compose stack packages Nginx, NestJS (with in-process `pg-boss` workers), and PostgreSQL 16 tuned for a 1GB DigitalOcean droplet.
 
 ## v2 Requirements

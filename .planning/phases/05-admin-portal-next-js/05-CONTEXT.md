@@ -12,30 +12,47 @@ Phase 5 builds the full-featured Next.js Admin Operations Portal for Poco Elder 
 - Service Catalog & Package versioning management to configure, preview, and bump versioned rate cards (ServiceCatalogVersion, PackageVersion, PackageServiceQuota) while strictly preserving grandfathered subscriptions and historical service requests.
 - Lead pipeline management table tracking Sales-to-CS ownership transitions with payment reminder triggers.
 - Read-only, paginated raw database table viewer for all Prisma entities to support administrative inspection, diagnostic audits, and testing.
+- Dedicated Financial Billing Dashboard (/admin/billing) for inspecting household wallets, tracking negative balances from emergency auto-debits, and downloading invoices.
+- Integrated diagnostics and partner health dashboard (/admin/integrations) featuring in-process pg-boss background job inspectors, webhook logs, and synthetic test payload dispatchers.
 </domain>
 
 <decisions>
 ## Implementation Decisions
 
-### 1. Operations & Ticket Triage Queues (ADMN-01, ADMN-02, TCKT-06, TCKT-07)
-- **D-01:** Tabbed multi-page queue architecture: Dedicated routes (/admin/triage, /admin/exceptions, /admin/sla-risk) with standardized high-density data tables, status badge indicators, and pagination. — **Reversibility:** reversible — routing and page hierarchy structure.
-- **D-02:** Modal dialog workflow actions: Individual ticket triage actions (confirming child service requests, dismissing false positives, emergency overrides, manual owner reassignment, exception resolution) execute via focused modal dialogs with clear state confirmation. — **Reversibility:** reversible — UI action interaction pattern.
-- **D-03:** Live status polling: TanStack Query polling (every 5 seconds when active) to keep queue counts and SLA clocks up to date without WebSocket server overhead. — **Reversibility:** costly — client state management and backend polling load.
+### 1. Multi-Role Navigation & Internal Auth UX (AUTH-02, AUTH-06)
+- **D-01:** Omni-role unified navigation: Internal staff users holding multiple simultaneous roles (e.g. Care Officer + Care Officer Manager + Operations Executive) see a merged navigation sidebar containing all permitted pages without switching contexts, with active role chips displayed in the header. — **Reversibility:** reversible — app layout and navigation permission filtering.
 
-### 2. Care Officer Manager Assignment UI (CARE-02, CARE-03, ADMN-03)
-- **D-04:** Officer-centric profile & roster view: Roster table listing all Care Officers, active household caseload count, supervising Senior Care Officer, and active/expiring certification badges. — **Reversibility:** reversible — dashboard view layout.
-- **D-05:** Modal assignment with strict certification gating: Assign/reassign household action opens a modal that filters and validates officer certifications (First Aid, Geriatric Care, BLS, Police Verification), strictly disabling assignment and displaying explicit missing certification alerts if requirements are unfulfilled. — **Reversibility:** costly — business-rules integration and assignment workflow contracts.
+### 2. Operations & Ticket Triage Queues (ADMN-01, ADMN-02, TCKT-02, TCKT-06, TCKT-07, FEED-06, FEED-07)
+- **D-02:** Tabbed multi-page queue architecture: Dedicated high-density routes (/admin/triage, /admin/exceptions, /admin/sla-risk) with standardized data tables, status badge indicators, and pagination. — **Reversibility:** reversible — routing and page hierarchy structure.
+- **D-03:** Inline quick-approve for AI suggestions: 1-click button directly in the table row to approve the AI's default suggested service into an immutable ServiceCatalogVersion child request without opening a modal, with a secondary 'Edit' modal for edge cases. — **Reversibility:** reversible — UI action interaction pattern.
+- **D-04:** Silent emergency flag checkbox: A simple checkbox during ticket/service creation or edit that sets isEmergency: true without additional confirmation steps. — **Reversibility:** reversible — form input handling.
+- **D-05:** Visual service tree exception resolution: For Waiting Ops Update tickets with conflicting child request states, modal renders parent ticket and indented tree of child requests with conflict warning icons; Ops Exec selects target rollup state (e.g. 'Completed with Exceptions' or 'Closed') with a mandatory resolution note. — **Reversibility:** reversible — exception resolution workflow.
+- **D-06:** Queue-only emergency ingestion: Real-time wearable fall alerts and incoming Exotel calls route purely into the standard triage queue table with a high-priority red badge filter, without intrusive full-screen takeovers or modal popups. — **Reversibility:** reversible — alert presentation pattern.
+- **D-07:** Direct client-side polling (5s interval): TanStack Query polls /api/admin/v1/tickets?status=pending_triage,waiting_ops,sla_at_risk with a visual 'Updated just now' indicator and manual 'Refresh' button, maintaining fresh state while conserving droplet RAM/CPU. — **Reversibility:** costly — client state management and backend polling load.
 
-### 3. Catalog & Package Versioning Management (CATL-01..05)
-- **D-06:** In-place quick editor with immediate version bumping: Form-based rate card and quota editor that automatically increments ersionNumber, sets effectiveFrom, and retains prior versions as immutable records. — **Reversibility:** costly — catalog mutation services and grandfathered integrity guarantees.
-- **D-07:** Historical version selector dropdown: Version history switcher allowing administrators to view past package/service rates and active subscription counts attached to grandfathered versions. — **Reversibility:** reversible — catalog inspection view.
+### 3. Care Officer Manager Assignment & Certifications (CARE-02, CARE-03, ADMN-03, FLD-04)
+- **D-08:** Officer-centric profile & roster view: Roster table listing all Care Officers, active household caseload count, supervisor reporting hierarchy, and active/expiring certification badges. — **Reversibility:** reversible — dashboard view layout.
+- **D-09:** Actionable certification warning banner with manager bypass: Assignment modal highlights missing or expired certificates in red with an 'Officer Ineligible' disabled button; provides a 'Manager Override' checkbox (restricted strictly to Care Officer Manager role with audit note) for exceptional temporary assignments. — **Reversibility:** costly — business-rules integration and assignment workflow contracts.
+- **D-10:** Automatic background fallback only: SLA breaches automatically reassign to supervising Senior Care Officers via background cron, with audit notification banners in the Admin Portal. — **Reversibility:** costly — SLA evaluation and escalation architecture.
+- **D-11:** Direct client-side S3 / local media viewer: KYC documents, certifications, and field visit SOP photos/audio notes render directly in the admin portal with thumbnail previews, zoomable lightbox modals for images, and in-browser audio players for voice notes. — **Reversibility:** costly — media asset rendering and presigned URL pipelines.
 
-### 4. Lead Pipeline & Raw DB Viewer / Diagnostics (ONBD-01..03, ADMN-04, ADMN-05)
-- **D-08:** Tabular lead pipeline view: Flat table for leads showing status (New, Contacted, Onboarding Pending, Activated), assigned owner (Sales / CS), quick status dropdown transitions, and simulated WhatsApp/SMS payment reminder triggers. — **Reversibility:** reversible — lead management table.
-- **D-09:** Schema-driven generic DB data grid: Generic read-only entity table viewer (/admin/database) with entity dropdown selector, column sorting, pagination, and expandable row details for inspecting raw database state across all Prisma models. — **Reversibility:** costly — admin diagnostics component architecture.
+### 4. Catalog & Package Versioning Management (CATL-01..05)
+- **D-12:** Simple edit form with automatic version bumping: Standard form fields for base price, emergency defaults, and package quotas; clicking 'Save & Publish' immediately creates the new immutable version row (ersionNumber++, effectiveFrom = now()) and redirects to catalog list, preserving grandfathered subscriptions automatically. — **Reversibility:** costly — catalog mutation services and grandfathered integrity guarantees.
+- **D-13:** Historical version selector dropdown: Version history switcher allowing administrators to review past rates and inspect active grandfathered subscription counts. — **Reversibility:** reversible — catalog inspection view.
+
+### 5. Lead Management & Sales-to-CS Handoff (ONBD-01..03, ADMN-04)
+- **D-14:** Tabular lead pipeline with inline status transitions: Flat table for leads showing status (New, Contacted, Onboarding Pending, Activated); changing the status dropdown directly in the table row from 'Contacted' to 'Onboarding Pending' automatically shifts role ownership from Sales Executive to Customer Success without extra steps. — **Reversibility:** reversible — lead management table.
+
+### 6. Billing & Financial Dashboard (BILL-01..07)
+- **D-15:** Dedicated financial billing dashboard (/admin/billing): High-level finance view showing MRR, negative balance accounts from emergency auto-debits, pending approval services, downloadable invoices, and aggregate ledger audit export. — **Reversibility:** costly — finance reporting and transaction inspection module.
+
+### 7. Diagnostics, Raw DB Viewer & Synthetic Webhooks (ADMN-05, TEST-04, INTG-05)
+- **D-16:** Tabbed raw database table explorer (/admin/database): Horizontal tab bar for top core entities (Users, Households, Seniors, Tickets, Wallets, AuditLogs) with simple flat data tables, column sort, and pagination. — **Reversibility:** costly — admin diagnostics component architecture.
+- **D-17:** Integrated diagnostics & background job inspector (/admin/integrations): Extend the Phase 2 Partner Health dashboard with additional tabs for pg-boss background job queues (failed job inspection and 1-click retry/purge) and automated test execution logs. — **Reversibility:** costly — background job and test observability dashboard.
+- **D-18:** Dynamic synthetic test payload injection: Dynamic form with pre-configured scenario presets (e.g. 'Trigger Wearable Fall', 'Trigger Out-of-Quota Ticket', 'Trigger Expired Certification') that post directly to /api/webhooks/v1/*. — **Reversibility:** reversible — test payload dispatching UI.
 
 ### the agent's Discretion
-- Exact layout spacing, typography, and color tokens using @poco/design-tokens and Tailwind CSS.
+- Layout spacing, typography, and color tokens using @poco/design-tokens and Tailwind CSS.
 - Integration of existing components from @poco/ui and /admin/integrations (already built in Phase 2).
 - Breadcrumbs, sidebar navigation styling, and internal auth guard redirects (/admin/login).
 
@@ -49,7 +66,7 @@ Phase 5 builds the full-featured Next.js Admin Operations Portal for Poco Elder 
 ### Architecture & Requirements
 - docs/poco-elder-care-design-brief.md §3, §4, §5, §6, §7 — Authoritative design brief defining dual auth, pg-boss, 3-step billing hierarchy, dual SLA tracking, 1:1 Care Officer mapping, and catalog grandfathering.
 - .planning/PROJECT.md — Project context, 1GB DO droplet constraints, and active requirements.
-- .planning/REQUIREMENTS.md — Formal requirements matrix (ADMN-01..05, CARE-02..03, TCKT-02, TCKT-06..07, CATL-05, INTG-05).
+- .planning/REQUIREMENTS.md — Formal requirements matrix (ADMN-01..05, CARE-02..03, TCKT-02, TCKT-06..07, CATL-05, INTG-05, BILL-01..07, TEST-04).
 - .planning/research/ARCHITECTURE.md — System architecture, container topology, package graph, and surface boundaries.
 - .planning/research/STACK.md — Technology stack versions, compatibility matrix, and banned anti-patterns.
 - .planning/phases/01-monorepo-foundation-prisma-schema-dry-business-rules/01-CONTEXT.md — Data models, integer paise convention, and pure business rules.
@@ -63,7 +80,7 @@ Phase 5 builds the full-featured Next.js Admin Operations Portal for Poco Elder 
 ## Existing Code Insights
 
 ### Reusable Assets
-- @poco/database: PrismaClient models for InternalUser, UserRole, Household, Senior, CareOfficerProfile, Certification, Ticket, ServiceRequest, ServiceCatalogVersion, PackageVersion, Lead, AuditLog, etc.
+- @poco/database: PrismaClient models for InternalUser, UserRole, Household, Senior, CareOfficerProfile, Certification, Ticket, ServiceRequest, ServiceCatalogVersion, PackageVersion, Lead, AuditLog, HouseholdWallet, WalletTransaction, etc.
 - @poco/business-rules: Canonical functions for ticket state transitions (	ransitionTicket), SLA status evaluations (evaluateSlaStatus), 3-step billing hierarchy, and certification gating (alidateCareOfficerCertifications).
 - @poco/validation: Surface-scoped Zod schemas for Admin DTOs (createServiceCatalogVersionSchema, ssignCareOfficerSchema, esolveWaitingOpsSchema, etc.).
 - @poco/design-tokens: Colors, typography, spacing, and status badge color definitions.
@@ -77,17 +94,20 @@ Phase 5 builds the full-featured Next.js Admin Operations Portal for Poco Elder 
 
 ### Integration Points
 - pps/admin-portal/src/app/admin: Main app router layout, sidebar navigation, and sub-route pages.
-- pps/api/src/modules/*: Admin controllers (/api/admin/v1/tickets, /api/admin/v1/care-officers, /api/admin/v1/catalog, /api/admin/v1/leads, /api/admin/v1/database).
+- pps/api/src/modules/*: Admin controllers (/api/admin/v1/tickets, /api/admin/v1/care-officers, /api/admin/v1/catalog, /api/admin/v1/leads, /api/admin/v1/billing, /api/admin/v1/database).
 
 </code_context>
 
 <specifics>
 ## Specific Ideas
 
-- Tabbed multi-page queue navigation (/admin/triage, /admin/exceptions, /admin/sla-risk) with distinct filters and count badges in navigation.
-- Dedicated Care Officer Roster with visual certification badges and blocked assignment triggers when certifications are missing.
-- In-place version bumping editor with clear indicator of grandfathered subscription protections.
-- Schema-driven database table viewer with column sorting and JSON cell inspection modal for rapid operational audits.
+- Tabbed multi-page queue navigation (/admin/triage, /admin/exceptions, /admin/sla-risk) with distinct filters and count badges.
+- 1-click inline quick-approve on AI-suggested tickets.
+- Dedicated Care Officer Roster with visual certification badges and manager bypass override checkbox.
+- Simple catalog form editor with automatic version incrementing and historical dropdown.
+- Dedicated /admin/billing financial dashboard for MRR, negative balance tracking, and invoices.
+- Tabbed raw database table viewer for top core Prisma entities.
+- Partner health dashboard tabs for pg-boss queue observability and synthetic test scenario injection.
 
 </specifics>
 

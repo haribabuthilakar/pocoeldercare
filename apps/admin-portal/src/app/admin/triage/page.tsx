@@ -39,7 +39,7 @@ export interface TriageTicketRow {
   createdAt: string;
 }
 
-function OperationsTriageQueueView() {
+export function OperationsTriageQueueView() {
   const queryClient = useQueryClient();
   const [selectedTicket, setSelectedTicket] = React.useState<TriageTicketRow | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);

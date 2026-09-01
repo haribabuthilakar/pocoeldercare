@@ -29,7 +29,7 @@ export interface LeadRow {
   convertedHouseholdId?: string | null;
 }
 
-function LeadPipelineView() {
+export function LeadPipelineView() {
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = React.useState('');
   const [stageFilter, setStageFilter] = React.useState<string>('ALL');

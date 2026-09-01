@@ -40,7 +40,7 @@ export interface RollupExceptionRow {
   }>;
 }
 
-function RollupExceptionsQueueView() {
+export function RollupExceptionsQueueView() {
   const queryClient = useQueryClient();
   const [selectedTicket, setSelectedTicket] = React.useState<RollupExceptionRow | null>(null);
   const [isModalOpen, setIsModalOpen] = React.useState(false);

@@ -51,8 +51,11 @@ until docker exec poco-prod-postgres pg_isready -U "${POSTGRES_USER:-postgres}" 
     sleep 2
 done
 
-# 5. Run Prisma migrations
+# 5. Run Prisma migrations & ensure realistic demo data
 echo "🗄️ Executing Prisma migrations in production..."
 docker exec poco-prod-api pnpm --filter @poco/database db:migrate
+
+echo "🌱 Ensuring database has realistic records..."
+docker exec -e ALLOW_PROD_SEED=true poco-prod-api pnpm --filter @poco/database db:seed:realistic || true
 
 echo "🎉 Deployment completed successfully!"

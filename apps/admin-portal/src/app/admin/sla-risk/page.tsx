@@ -37,7 +37,7 @@ export interface SlaRiskRow {
   deliveryDueAt?: string;
 }
 
-function SlaRiskQueueView() {
+export function SlaRiskQueueView() {
   const queryClient = useQueryClient();
   const [actionMessage, setActionMessage] = React.useState<string | null>(null);
 

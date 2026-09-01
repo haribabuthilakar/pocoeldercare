@@ -104,8 +104,8 @@
 
 ### Testing Harness, Seed Data & Droplet Deployment
 
-- [ ] **TEST-01**: Database seed script populates >=2 users per internal role, ~50 care officers, and ~200 households (1-4 seniors each) with realistic clinical/financial data.
-- [ ] **TEST-02**: Comprehensive Vitest unit and integration test suite verifies state machines, SLA timers, billing rules, and RBAC security.
+- [x] **TEST-01**: Database seed script populates >=2 users per internal role, ~50 care officers, and ~200 households (1-4 seniors each) with realistic clinical/financial data.
+- [x] **TEST-02**: Comprehensive Vitest unit and integration test suite verifies state machines, SLA timers, billing rules, and RBAC security.
 - [ ] **TEST-03**: Playwright end-to-end test suite covers complete customer journeys across Family Portal, Field App, and Admin Portal.
 - [ ] **TEST-04**: Admin Portal includes a test runner dashboard displaying test execution history, status, and failed background jobs.
 - [ ] **TEST-05**: Single Docker Compose stack packages Nginx, NestJS (with in-process `pg-boss` workers), and PostgreSQL 16 tuned for a 1GB DigitalOcean droplet.

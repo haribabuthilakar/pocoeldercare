@@ -7,9 +7,9 @@ Poco Elder Care is built in a sequenced execution architecture: first constructi
 ## Phases
 
 - [x] **Phase 1: Monorepo Foundation, Prisma Schema & DRY Business Rules** - Set up Turborepo workspace, PostgreSQL Prisma schema, and canonical `@poco/*` business logic packages.
-- [ ] **Phase 2: Integration Partner Stubs & Interactive Mocks** - Build 12 backend integration partner stubs and interactive UI simulators for Razorpay and Exotel.
-- [ ] **Phase 3: Common NestJS Backend & Business Services** - Build dual-auth REST API, ticket/SLA/billing engines, pg-boss job queues, and async Claude AI classification worker.
-- [ ] **Phase 4: Realistic Seed Data & Backend Verification** - Generate realistic database seed data (~50 officers, ~200 households) and verify all backend services with Vitest.
+- [x] **Phase 2: Integration Partner Stubs & Interactive Mocks** - Build 12 backend integration partner stubs and interactive UI simulators for Razorpay and Exotel.
+- [x] **Phase 3: Common NestJS Backend & Business Services** - Build dual-auth REST API, ticket/SLA/billing engines, pg-boss job queues, and async Claude AI classification worker.
+- [x] **Phase 4: Realistic Seed Data & Backend Verification** - Generate realistic database seed data (~50 officers, ~200 households) and verify all backend services with Vitest.
 - [ ] **Phase 5: Admin Portal (Next.js)** - Build high-density operations queues, Care Officer Manager assignment UI with certification gating, catalog versioning, and integration test harness.
 - [ ] **Phase 6: Field Mobile App (React Native & WatermelonDB)** - Build offline-first mobile app with guided SOP checklists, direct S3 presigned URL media capture, geofenced visits, and batch sync.
 - [ ] **Phase 7: Family Portal (Next.js)** - Build reassuring consumer portal with wellness dashboard, shared activity feed / chat, wallet management, service approvals, and family escalation tree.
@@ -114,9 +114,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Monorepo Foundation, Prisma Schema & DRY Business Rules | 8/8 | Completed | 2026-08-31 |
-| 2. Integration Partner Stubs & Interactive Mocks | 0/2 | Not started | - |
-| 3. Common NestJS Backend & Business Services | 0/4 | Not started | - |
-| 4. Realistic Seed Data & Backend Verification | 0/2 | Not started | - |
+| 2. Integration Partner Stubs & Interactive Mocks | 6/6 | Completed | 2026-09-01 |
+| 3. Common NestJS Backend & Business Services | 4/4 | Completed | 2026-09-01 |
+| 4. Realistic Seed Data & Backend Verification | 2/2 | Completed | 2026-09-01 |
 | 5. Admin Portal (Next.js) | 0/3 | Not started | - |
 | 6. Field Mobile App (React Native & WatermelonDB) | 0/3 | Not started | - |
 | 7. Family Portal (Next.js) | 0/3 | Not started | - |

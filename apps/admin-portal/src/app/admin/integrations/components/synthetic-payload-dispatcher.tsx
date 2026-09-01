@@ -66,11 +66,11 @@ export const SYNTHETIC_SCENARIOS: SyntheticScenario[] = [
 
 export function SyntheticPayloadDispatcher() {
   const [selectedScenarioId, setSelectedScenarioId] = React.useState<string>(
-    SYNTHETIC_SCENARIOS[0].id
+    SYNTHETIC_SCENARIOS[0]!.id
   );
-  const [endpoint, setEndpoint] = React.useState(SYNTHETIC_SCENARIOS[0].endpoint);
+  const [endpoint, setEndpoint] = React.useState(SYNTHETIC_SCENARIOS[0]!.endpoint);
   const [jsonText, setJsonText] = React.useState(
-    JSON.stringify(SYNTHETIC_SCENARIOS[0].defaultPayload, null, 2)
+    JSON.stringify(SYNTHETIC_SCENARIOS[0]!.defaultPayload, null, 2)
   );
   const [isDispatching, setIsDispatching] = React.useState(false);
   const [responseLog, setResponseLog] = React.useState<{

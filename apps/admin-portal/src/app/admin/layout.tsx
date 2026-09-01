@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { Badge, Avatar, AvatarFallback, cn } from '@poco/ui';
 import { UserRole } from '@poco/constants';
-import { AdminProviders, useStaffUser, StaffUser } from './providers';
+import { AdminProviders, useStaffUser, type StaffUser } from './providers';
 
 export interface NavItem {
   label: string;

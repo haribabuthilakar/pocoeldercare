@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as React from 'react';
-import { CareOfficersRosterView } from '@/app/admin/care-officers/page';
+import CareOfficersPage from '@/app/admin/care-officers/page';
 import { AdminProviders } from '@/app/admin/providers';
 import { apiClient } from '@/lib/api-client';
 import { mockOpsManager } from '../fixtures/staff-session.fixture';
@@ -83,7 +83,7 @@ describe('CareOfficersRosterView — Roster, Hierarchy & Media Lightbox', () => 
 
     render(
       <AdminProviders initialUser={mockOpsManager}>
-        <CareOfficersRosterView />
+        <CareOfficersPage />
       </AdminProviders>
     );
 
@@ -103,7 +103,7 @@ describe('CareOfficersRosterView — Roster, Hierarchy & Media Lightbox', () => 
 
     render(
       <AdminProviders initialUser={mockOpsManager}>
-        <CareOfficersRosterView />
+        <CareOfficersPage />
       </AdminProviders>
     );
 
@@ -126,7 +126,7 @@ describe('CareOfficersRosterView — Roster, Hierarchy & Media Lightbox', () => 
 
     render(
       <AdminProviders initialUser={mockOpsManager}>
-        <CareOfficersRosterView />
+        <CareOfficersPage />
       </AdminProviders>
     );
 
@@ -146,7 +146,7 @@ describe('CareOfficersRosterView — Roster, Hierarchy & Media Lightbox', () => 
 
     render(
       <AdminProviders initialUser={mockOpsManager}>
-        <CareOfficersRosterView />
+        <CareOfficersPage />
       </AdminProviders>
     );
 

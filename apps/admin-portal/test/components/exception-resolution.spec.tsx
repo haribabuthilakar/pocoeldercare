@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as React from 'react';
-import { RollupExceptionsQueueView } from '@/app/admin/exceptions/page';
+import RollupExceptionsPage from '@/app/admin/exceptions/page';
 import { AdminProviders } from '@/app/admin/providers';
 import { apiClient } from '@/lib/api-client';
 import { mockRollupExceptionTickets } from '../fixtures/tickets.fixture';
@@ -21,7 +21,7 @@ describe('RollupExceptionsQueueView & RollupResolutionModal', () => {
 
     render(
       <AdminProviders>
-        <RollupExceptionsQueueView />
+        <RollupExceptionsPage />
       </AdminProviders>
     );
 
@@ -42,7 +42,7 @@ describe('RollupExceptionsQueueView & RollupResolutionModal', () => {
 
     render(
       <AdminProviders>
-        <RollupExceptionsQueueView />
+        <RollupExceptionsPage />
       </AdminProviders>
     );
 
@@ -88,7 +88,7 @@ describe('RollupExceptionsQueueView & RollupResolutionModal', () => {
 
     render(
       <AdminProviders>
-        <RollupExceptionsQueueView />
+        <RollupExceptionsPage />
       </AdminProviders>
     );
 

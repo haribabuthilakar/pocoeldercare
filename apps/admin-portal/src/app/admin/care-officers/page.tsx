@@ -53,7 +53,7 @@ export interface CareOfficerRow {
   }>;
 }
 
-export function CareOfficersRosterView() {
+function CareOfficersRosterView() {
   const queryClient = useQueryClient();
   const { user } = useStaffUser();
   const [searchQuery, setSearchQuery] = React.useState('');

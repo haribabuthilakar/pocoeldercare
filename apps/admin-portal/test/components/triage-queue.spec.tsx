@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as React from 'react';
-import { OperationsTriageQueueView } from '@/app/admin/triage/page';
+import OperationsTriagePage from '@/app/admin/triage/page';
 import { AdminProviders } from '@/app/admin/providers';
 import { apiClient } from '@/lib/api-client';
 import { mockPendingTriageTickets } from '../fixtures/tickets.fixture';
@@ -21,7 +21,7 @@ describe('OperationsTriageQueueView — Triage Queue & Quick Approve', () => {
 
     render(
       <AdminProviders>
-        <OperationsTriageQueueView />
+        <OperationsTriagePage />
       </AdminProviders>
     );
 
@@ -48,7 +48,7 @@ describe('OperationsTriageQueueView — Triage Queue & Quick Approve', () => {
 
     render(
       <AdminProviders>
-        <OperationsTriageQueueView />
+        <OperationsTriagePage />
       </AdminProviders>
     );
 
@@ -58,7 +58,7 @@ describe('OperationsTriageQueueView — Triage Queue & Quick Approve', () => {
 
     // Click the first Quick Approve button (for tkt-001-emergency)
     const quickApproveButtons = screen.getAllByText('Quick Approve');
-    fireEvent.click(quickApproveButtons[0]);
+    fireEvent.click(quickApproveButtons[0]!);
 
     await waitFor(() => {
       expect(postSpy).toHaveBeenCalledWith(
@@ -82,7 +82,7 @@ describe('OperationsTriageQueueView — Triage Queue & Quick Approve', () => {
 
     render(
       <AdminProviders>
-        <OperationsTriageQueueView />
+        <OperationsTriagePage />
       </AdminProviders>
     );
 
@@ -92,7 +92,7 @@ describe('OperationsTriageQueueView — Triage Queue & Quick Approve', () => {
 
     // Open edit modal for ticket 1
     const editButtons = screen.getAllByRole('button', { name: /Edit ticket/i });
-    fireEvent.click(editButtons[0]);
+    fireEvent.click(editButtons[0]!);
 
     // Check modal opened
     expect(screen.getByText('Customize Triage Decomposition')).toBeInTheDocument();
@@ -125,7 +125,7 @@ describe('OperationsTriageQueueView — Triage Queue & Quick Approve', () => {
 
     render(
       <AdminProviders>
-        <OperationsTriageQueueView />
+        <OperationsTriagePage />
       </AdminProviders>
     );
 

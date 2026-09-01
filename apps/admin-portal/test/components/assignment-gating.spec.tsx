@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as React from 'react';
 import {
   CareOfficerAssignmentModal,
-  OfficerCandidate,
+  type OfficerCandidate,
 } from '@/app/admin/care-officers/components/assignment-modal';
 import { UserRole } from '@poco/constants';
 import { apiClient } from '@/lib/api-client';

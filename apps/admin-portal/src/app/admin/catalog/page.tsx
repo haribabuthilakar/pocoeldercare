@@ -27,7 +27,7 @@ export interface ServiceCatalogRow extends CatalogServiceItem {
   activeSubscriberCount: number;
 }
 
-export function ServiceCatalogStudioView() {
+function ServiceCatalogStudioView() {
   const queryClient = useQueryClient();
   const [selectedService, setSelectedService] = React.useState<CatalogServiceItem | null>(null);
   const [isEditorOpen, setIsEditorOpen] = React.useState(false);

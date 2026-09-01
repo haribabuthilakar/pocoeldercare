@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as React from 'react';
-import { DatabaseExplorerView } from '@/app/admin/database/page';
+import DatabaseExplorerPage from '@/app/admin/database/page';
 import { AdminProviders } from '@/app/admin/providers';
 import { apiClient } from '@/lib/api-client';
 import { mockSuperAdmin, mockOpsManager } from '../fixtures/staff-session.fixture';
@@ -40,7 +40,7 @@ describe('DatabaseExplorerView — Raw Table Inspection & PII Sanitization', () 
   it('restricts access for non-SUPER_ADMIN users with warning banner', () => {
     render(
       <AdminProviders initialUser={mockOpsManager}>
-        <DatabaseExplorerView />
+        <DatabaseExplorerPage />
       </AdminProviders>
     );
 
@@ -55,7 +55,7 @@ describe('DatabaseExplorerView — Raw Table Inspection & PII Sanitization', () 
 
     render(
       <AdminProviders initialUser={mockSuperAdmin}>
-        <DatabaseExplorerView />
+        <DatabaseExplorerPage />
       </AdminProviders>
     );
 
@@ -78,7 +78,7 @@ describe('DatabaseExplorerView — Raw Table Inspection & PII Sanitization', () 
 
     render(
       <AdminProviders initialUser={mockSuperAdmin}>
-        <DatabaseExplorerView />
+        <DatabaseExplorerPage />
       </AdminProviders>
     );
 

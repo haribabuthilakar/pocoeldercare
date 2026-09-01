@@ -6,8 +6,7 @@
   ],
   "tasks": {
     "db:generate": {
-      "cache": true,
-      "outputs": ["node_modules/.prisma/**"]
+      "cache": false
     },
     "build": {
       "dependsOn": ["^db:generate", "^build"],

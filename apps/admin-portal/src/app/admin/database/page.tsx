@@ -37,7 +37,7 @@ export interface PaginatedDbResponse {
   records: Record<string, any>[];
 }
 
-export function DatabaseExplorerView() {
+function DatabaseExplorerView() {
   const { user } = useStaffUser();
   const [selectedModel, setSelectedModel] = React.useState('households');
   const [page, setPage] = React.useState(1);

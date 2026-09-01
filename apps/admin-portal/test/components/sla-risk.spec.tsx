@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as React from 'react';
-import { SlaRiskQueueView } from '@/app/admin/sla-risk/page';
+import SlaRiskPage from '@/app/admin/sla-risk/page';
 import { AdminProviders } from '@/app/admin/providers';
 import { apiClient } from '@/lib/api-client';
 import { mockSlaRiskTickets } from '../fixtures/tickets.fixture';
@@ -21,7 +21,7 @@ describe('SlaRiskQueueView — Dual Timers & Supervisor Fallback', () => {
 
     render(
       <AdminProviders>
-        <SlaRiskQueueView />
+        <SlaRiskPage />
       </AdminProviders>
     );
 
@@ -49,7 +49,7 @@ describe('SlaRiskQueueView — Dual Timers & Supervisor Fallback', () => {
 
     render(
       <AdminProviders>
-        <SlaRiskQueueView />
+        <SlaRiskPage />
       </AdminProviders>
     );
 
@@ -58,7 +58,7 @@ describe('SlaRiskQueueView — Dual Timers & Supervisor Fallback', () => {
     });
 
     const fallbackButtons = screen.getAllByText('Escalate / Fallback');
-    fireEvent.click(fallbackButtons[0]);
+    fireEvent.click(fallbackButtons[0]!);
 
     await waitFor(() => {
       expect(postSpy).toHaveBeenCalledWith(
@@ -72,7 +72,7 @@ describe('SlaRiskQueueView — Dual Timers & Supervisor Fallback', () => {
 
     render(
       <AdminProviders>
-        <SlaRiskQueueView />
+        <SlaRiskPage />
       </AdminProviders>
     );
 

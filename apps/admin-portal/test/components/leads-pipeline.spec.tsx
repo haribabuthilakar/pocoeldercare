@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as React from 'react';
-import { LeadPipelineView } from '@/app/admin/leads/page';
+import LeadPipelinePage from '@/app/admin/leads/page';
 import { AdminProviders } from '@/app/admin/providers';
 import { apiClient } from '@/lib/api-client';
 import { LeadStage } from '@poco/constants';
@@ -44,7 +44,7 @@ describe('LeadPipelineView — Inline Stage Transitions & Handoff', () => {
 
     render(
       <AdminProviders>
-        <LeadPipelineView />
+        <LeadPipelinePage />
       </AdminProviders>
     );
 
@@ -67,7 +67,7 @@ describe('LeadPipelineView — Inline Stage Transitions & Handoff', () => {
 
     render(
       <AdminProviders>
-        <LeadPipelineView />
+        <LeadPipelinePage />
       </AdminProviders>
     );
 
@@ -95,7 +95,7 @@ describe('LeadPipelineView — Inline Stage Transitions & Handoff', () => {
 
     render(
       <AdminProviders>
-        <LeadPipelineView />
+        <LeadPipelinePage />
       </AdminProviders>
     );
 
@@ -118,7 +118,7 @@ describe('LeadPipelineView — Inline Stage Transitions & Handoff', () => {
 
     render(
       <AdminProviders>
-        <LeadPipelineView />
+        <LeadPipelinePage />
       </AdminProviders>
     );
 

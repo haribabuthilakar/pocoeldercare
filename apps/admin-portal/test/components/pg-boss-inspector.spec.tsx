@@ -67,7 +67,7 @@ describe('PgBossInspector — Queue Health, Retries & Purge', () => {
     });
 
     const retryButtons = screen.getAllByRole('button', { name: /Retry Failed Job/i });
-    fireEvent.click(retryButtons[0]);
+    fireEvent.click(retryButtons[0]!);
 
     await waitFor(() => {
       expect(postSpy).toHaveBeenCalledWith(

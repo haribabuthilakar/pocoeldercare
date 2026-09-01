@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as React from 'react';
-import { BillingDashboardView } from '@/app/admin/billing/page';
+import BillingPage from '@/app/admin/billing/page';
 import { AdminProviders } from '@/app/admin/providers';
 import { apiClient } from '@/lib/api-client';
 import { BillingTransactionType } from '@poco/constants';
@@ -59,7 +59,7 @@ describe('BillingDashboardView — Financial Metrics, Overdrafts & Invoices', ()
 
     render(
       <AdminProviders>
-        <BillingDashboardView />
+        <BillingPage />
       </AdminProviders>
     );
 
@@ -78,7 +78,7 @@ describe('BillingDashboardView — Financial Metrics, Overdrafts & Invoices', ()
 
     render(
       <AdminProviders>
-        <BillingDashboardView />
+        <BillingPage />
       </AdminProviders>
     );
 
@@ -110,7 +110,7 @@ describe('BillingDashboardView — Financial Metrics, Overdrafts & Invoices', ()
 
     render(
       <AdminProviders>
-        <BillingDashboardView />
+        <BillingPage />
       </AdminProviders>
     );
 

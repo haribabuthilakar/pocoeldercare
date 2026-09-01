@@ -51,7 +51,7 @@ export interface BillingOverviewData {
   }>;
 }
 
-export function BillingDashboardView() {
+function BillingDashboardView() {
   const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = React.useState<'overview' | 'overdrafts' | 'ledger'>(
     'overview'

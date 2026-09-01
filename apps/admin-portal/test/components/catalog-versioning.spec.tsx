@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as React from 'react';
-import { ServiceCatalogStudioView } from '@/app/admin/catalog/page';
+import CatalogPage from '@/app/admin/catalog/page';
 import { AdminProviders } from '@/app/admin/providers';
 import { apiClient } from '@/lib/api-client';
 import { SopProofType } from '@poco/constants';
@@ -64,7 +64,7 @@ describe('ServiceCatalogStudioView — Version Bumping & Grandfathered Rate Card
 
     render(
       <AdminProviders>
-        <ServiceCatalogStudioView />
+        <CatalogPage />
       </AdminProviders>
     );
 
@@ -82,7 +82,7 @@ describe('ServiceCatalogStudioView — Version Bumping & Grandfathered Rate Card
 
     render(
       <AdminProviders>
-        <ServiceCatalogStudioView />
+        <CatalogPage />
       </AdminProviders>
     );
 
@@ -111,7 +111,7 @@ describe('ServiceCatalogStudioView — Version Bumping & Grandfathered Rate Card
 
     render(
       <AdminProviders>
-        <ServiceCatalogStudioView />
+        <CatalogPage />
       </AdminProviders>
     );
 

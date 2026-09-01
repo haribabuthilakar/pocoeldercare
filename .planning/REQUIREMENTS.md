@@ -8,11 +8,11 @@
 ### Authentication, Multi-Role Access & Household Context
 
 - [ ] **AUTH-01**: External users (family members/seniors) can sign up with phone/email and authenticate via JWT.
-- [ ] **AUTH-02**: Internal staff can authenticate with role-based JWT supporting multiple simultaneous roles (e.g. Care Officer + Training Manager).
+- [x] **AUTH-02**: Internal staff can authenticate with role-based JWT supporting multiple simultaneous roles (e.g. Care Officer + Training Manager).
 - [ ] **AUTH-03**: Primary family members can invite and remove family members for their specific household.
 - [ ] **AUTH-04**: Invited family members have full access to view wellness, pay invoices, and approve services, but cannot administer family membership.
 - [ ] **AUTH-05**: Users associated with multiple households can switch their active household context via a dropdown selector.
-- [ ] **AUTH-06**: Field App access is automatically granted to any internal user holding the Care Officer role.
+- [x] **AUTH-06**: Field App access is automatically granted to any internal user holding the Care Officer role.
 
 ### Onboarding, Sales-to-CS Handoff & Activation
 
@@ -33,12 +33,12 @@
 ### Ticket & Service Request Lifecycle & Operations Triage
 
 - [ ] **TCKT-01**: Tickets can be raised by seniors, family members, Care Officers, inbound Exotel phone-in IVR, missed wearable pings, or AI classification.
-- [ ] **TCKT-02**: Operations Executives can triage tickets into 1 to N child Service Requests, each referencing an immutable `ServiceCatalogVersion`.
+- [x] **TCKT-02**: Operations Executives can triage tickets into 1 to N child Service Requests, each referencing an immutable `ServiceCatalogVersion`.
 - [ ] **TCKT-03**: Service Requests follow a uniform lifecycle state machine (`Open -> Assigned -> In Progress -> Pending Approval -> Completed -> Closed`, `Cancelled`, `Waiting Ops Update`).
 - [ ] **TCKT-04**: Parent ticket status automatically aggregates from child service request states using standard rollup rules.
 - [ ] **TCKT-05**: Inbound phone calls via Exotel stub automatically create a ticket and open an active handling UI for the Operations Executive.
-- [ ] **TCKT-06**: When child service requests produce conflicting or ambiguous rollup states, parent ticket automatically transitions to `Waiting Ops Update`.
-- [ ] **TCKT-07**: Operations Executives can triage and resolve `Waiting Ops Update` tickets directly from the Admin Portal queue.
+- [x] **TCKT-06**: When child service requests produce conflicting or ambiguous rollup states, parent ticket automatically transitions to `Waiting Ops Update`.
+- [x] **TCKT-07**: Operations Executives can triage and resolve `Waiting Ops Update` tickets directly from the Admin Portal queue.
 
 ### Dual SLA State Machine & Escalation
 
@@ -152,6 +152,7 @@
 | TEST-01 .. TEST-05 | Phase 8 | Pending |
 
 **Coverage:**
+
 - v1 requirements: 65 total
 - Mapped to roadmap: 65
 - Unmapped: 0 ✓

@@ -6,7 +6,7 @@ RUN corepack enable && corepack prepare pnpm@10.30.1 --activate
 
 WORKDIR /app
 
-# Copy root manifest files
+# Copy root configuration and lockfiles
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
 
 # Copy all packages & apps
@@ -18,9 +18,9 @@ COPY apps/field-app ./apps/field-app
 # Install all monorepo dependencies
 RUN pnpm install --frozen-lockfile
 
-# Generate Prisma Client & build workspace dependencies and API
+# Generate Prisma Client & build all API dependencies topologically with Turbo
 RUN pnpm --filter @poco/database db:generate
-RUN pnpm --filter @poco/api... build
+RUN pnpm turbo build --filter=@poco/api
 
 # Production runtime stage
 FROM node:22-alpine AS runner
@@ -33,7 +33,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=4000
 
-# Copy workspace and build artifacts
+# Copy full built workspace
 COPY --from=base /app ./
 
 EXPOSE 4000

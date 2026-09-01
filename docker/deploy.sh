@@ -18,11 +18,32 @@ fi
 echo "📥 Pulling latest git repository updates..."
 git pull origin main || git pull origin master
 
-# 3. Build & launch production containers
-echo "🐳 Deploying production Docker Compose stack..."
-docker compose -f docker/docker-compose.prod.yml down --remove-orphans || true
-docker compose -f docker/docker-compose.prod.yml build --pull
-docker compose -f docker/docker-compose.prod.yml up -d
+# 3. Build & launch production containers with CPU throttling
+echo "🐳 Deploying production Docker Compose stack (CPU throttled & sequential)..."
+
+# Limit Docker and BuildKit concurrency to 1 to avoid CPU spikes and memory exhaustion
+export COMPOSE_PARALLEL_LIMIT=1
+export DOCKER_BUILDKIT=1
+export TURBO_CONCURRENCY=1
+export UV_THREADPOOL_SIZE=2
+
+# Build images sequentially with low process priority (nice)
+NICE_CMD=""
+if command -v nice >/dev/null 2>&1; then
+    NICE_CMD="nice -n 19"
+fi
+
+echo "🔨 Building backend image..."
+$NICE_CMD docker compose -f docker/docker-compose.prod.yml build backend
+
+echo "🔨 Building web image..."
+$NICE_CMD docker compose -f docker/docker-compose.prod.yml build web
+
+echo "🔨 Building field-app image..."
+$NICE_CMD docker compose -f docker/docker-compose.prod.yml build field-app
+
+echo "🚀 Starting containers..."
+docker compose -f docker/docker-compose.prod.yml up -d --remove-orphans
 
 # 4. Wait for database readiness
 echo "⏳ Waiting for PostgreSQL container to become healthy..."

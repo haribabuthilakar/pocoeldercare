@@ -2,14 +2,19 @@
   "name": "@poco/database",
   "version": "0.0.0",
   "description": "Database schema, migrations, seed runners, and typed Prisma Client singleton for Poco Elder Care",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "import": "./dist/client.mjs",
+      "require": "./dist/client.js"
     }
   },
   "files": [
@@ -22,8 +27,9 @@
     "db:generate": "prisma generate --schema=./prisma/schema",
     "db:migrate": "prisma migrate dev --schema=./prisma/schema",
     "db:seed": "tsx src/seed.ts",
-    "db:seed:realistic": "tsx src/seeds/realistic.ts",
-    "build": "pnpm db:generate && tsup",
+    "db:seed:quick": "tsx src/seed.ts --quick",
+    "db:seed:realistic": "tsx src/seed.ts",
+    "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist node_modules/.prisma"

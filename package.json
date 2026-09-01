@@ -19,6 +19,7 @@
     "db:generate": "turbo run db:generate",
     "db:migrate": "pnpm --filter @poco/database db:migrate",
     "db:seed": "pnpm --filter @poco/database db:seed",
+    "db:seed:quick": "pnpm --filter @poco/database db:seed:quick",
     "db:seed:realistic": "pnpm --filter @poco/database db:seed:realistic"
   },
   "devDependencies": {

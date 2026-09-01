@@ -113,6 +113,42 @@ export enum VitalSeverity {
 }
 
 /**
+ * Clinical vital source classification.
+ */
+export enum VitalSource {
+  MANUAL = 'MANUAL',
+  BLUETOOTH = 'BLUETOOTH',
+  WEARABLE_IOT = 'WEARABLE_IOT',
+  POCOCARE_EMR = 'POCOCARE_EMR'
+}
+
+/**
+ * Activity Feed actor types.
+ */
+export enum ActivityActorType {
+  CARE_OFFICER = 'CARE_OFFICER',
+  PERSON = 'PERSON',
+  INTERNAL_USER = 'INTERNAL_USER',
+  SYSTEM = 'SYSTEM'
+}
+
+/**
+ * Activity Feed event types.
+ */
+export enum ActivityEventType {
+  MESSAGE = 'MESSAGE',
+  VOICE_NOTE = 'VOICE_NOTE',
+  CHECK_IN = 'CHECK_IN',
+  CHECK_OUT = 'CHECK_OUT',
+  VITALS_RECORDED = 'VITALS_RECORDED',
+  SOP_STEP_COMPLETED = 'SOP_STEP_COMPLETED',
+  TICKET_CREATED = 'TICKET_CREATED',
+  TICKET_RESOLVED = 'TICKET_RESOLVED',
+  BILLING_EVENT = 'BILLING_EVENT',
+  INCIDENT_ALERT = 'INCIDENT_ALERT'
+}
+
+/**
  * Audit log actor types.
  */
 export enum AuditActorType {
@@ -146,3 +182,50 @@ export enum SopProofType {
 }
 
 export const SOP_PROOF_TYPES = Object.values(SopProofType) as readonly SopProofType[];
+
+/**
+ * Service Categories.
+ */
+export enum ServiceCategory {
+  CLINICAL = 'CLINICAL',
+  COMPANIONSHIP = 'COMPANIONSHIP',
+  LOGISTICS = 'LOGISTICS',
+  EMERGENCY = 'EMERGENCY',
+  HOUSEHOLD = 'HOUSEHOLD',
+  ADVICE = 'ADVICE'
+}
+
+/**
+ * Package Tiers.
+ */
+export enum PackageTier {
+  KAVACH = 'KAVACH',
+  SAHARA = 'SAHARA',
+  SAMPOORNA = 'SAMPOORNA'
+}
+
+/**
+ * Certification Statuses.
+ */
+export enum CertificationStatus {
+  ACTIVE = 'ACTIVE',
+  EXPIRED = 'EXPIRED',
+  REVOKED = 'REVOKED'
+}
+
+/**
+ * Subscription Statuses.
+ */
+export enum SubscriptionStatus {
+  ACTIVE = 'ACTIVE',
+  PAUSED = 'PAUSED',
+  CANCELLED = 'CANCELLED'
+}
+
+/**
+ * Billing Cycles.
+ */
+export enum BillingCycle {
+  MONTHLY = 'MONTHLY',
+  YEARLY = 'YEARLY'
+}

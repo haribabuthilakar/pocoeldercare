@@ -1,6 +1,6 @@
 import type { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-import { UserRole } from '@poco/constants';
+import { UserRole, CertificationStatus } from '@poco/constants';
 
 export const SEED_STAFF = {
   admin: {
@@ -32,27 +32,26 @@ export const SEED_STAFF = {
     roles: [UserRole.CARE_OFFICER],
     profile: {
       id: '44444444-4444-4444-b444-444444444444',
-      employeeCode: 'POCO-CO-001',
-      territory: 'South Bangalore',
-      maxHouseholdCapacity: 25,
+      phone: '9876500004',
+      clusterCode: 'South Bangalore',
       isAvailable: true,
-      currentLatitude: 12.9279,
-      currentLongitude: 77.6271
+      homeBaseLat: 12.9279,
+      homeBaseLng: 77.6271
     }
   }
 };
 
 export async function seedStaff(prisma: PrismaClient): Promise<void> {
-  const passwordHash = await bcrypt.hash('Password@123', 10);
+  const passwordHash = await bcrypt.hash('PocoCare123!', 10);
 
   // 1. Seed Super Admin
   await prisma.internalUser.upsert({
     where: { email: SEED_STAFF.admin.email },
-    update: { fullName: SEED_STAFF.admin.fullName, passwordHash },
+    update: { name: SEED_STAFF.admin.fullName, passwordHash },
     create: {
       id: SEED_STAFF.admin.id,
       email: SEED_STAFF.admin.email,
-      fullName: SEED_STAFF.admin.fullName,
+      name: SEED_STAFF.admin.fullName,
       phone: SEED_STAFF.admin.phone,
       passwordHash,
       roles: {
@@ -64,11 +63,11 @@ export async function seedStaff(prisma: PrismaClient): Promise<void> {
   // 2. Seed Ops Manager
   await prisma.internalUser.upsert({
     where: { email: SEED_STAFF.opsManager.email },
-    update: { fullName: SEED_STAFF.opsManager.fullName, passwordHash },
+    update: { name: SEED_STAFF.opsManager.fullName, passwordHash },
     create: {
       id: SEED_STAFF.opsManager.id,
       email: SEED_STAFF.opsManager.email,
-      fullName: SEED_STAFF.opsManager.fullName,
+      name: SEED_STAFF.opsManager.fullName,
       phone: SEED_STAFF.opsManager.phone,
       passwordHash,
       roles: {
@@ -80,11 +79,11 @@ export async function seedStaff(prisma: PrismaClient): Promise<void> {
   // 3. Seed Care Manager
   await prisma.internalUser.upsert({
     where: { email: SEED_STAFF.careManager.email },
-    update: { fullName: SEED_STAFF.careManager.fullName, passwordHash },
+    update: { name: SEED_STAFF.careManager.fullName, passwordHash },
     create: {
       id: SEED_STAFF.careManager.id,
       email: SEED_STAFF.careManager.email,
-      fullName: SEED_STAFF.careManager.fullName,
+      name: SEED_STAFF.careManager.fullName,
       phone: SEED_STAFF.careManager.phone,
       passwordHash,
       roles: {
@@ -96,11 +95,11 @@ export async function seedStaff(prisma: PrismaClient): Promise<void> {
   // 4. Seed Care Officer with Profile and Certifications
   const officerUser = await prisma.internalUser.upsert({
     where: { email: SEED_STAFF.careOfficer.email },
-    update: { fullName: SEED_STAFF.careOfficer.fullName, passwordHash },
+    update: { name: SEED_STAFF.careOfficer.fullName, passwordHash },
     create: {
       id: SEED_STAFF.careOfficer.id,
       email: SEED_STAFF.careOfficer.email,
-      fullName: SEED_STAFF.careOfficer.fullName,
+      name: SEED_STAFF.careOfficer.fullName,
       phone: SEED_STAFF.careOfficer.phone,
       passwordHash,
       roles: {
@@ -109,21 +108,20 @@ export async function seedStaff(prisma: PrismaClient): Promise<void> {
     }
   });
 
-  await prisma.careOfficerProfile.upsert({
+  const profile = await prisma.careOfficerProfile.upsert({
     where: { internalUserId: officerUser.id },
     update: {
-      territory: SEED_STAFF.careOfficer.profile.territory,
+      clusterCode: SEED_STAFF.careOfficer.profile.clusterCode,
       isAvailable: SEED_STAFF.careOfficer.profile.isAvailable
     },
     create: {
       id: SEED_STAFF.careOfficer.profile.id,
       internalUserId: officerUser.id,
-      employeeCode: SEED_STAFF.careOfficer.profile.employeeCode,
-      territory: SEED_STAFF.careOfficer.profile.territory,
-      maxHouseholdCapacity: SEED_STAFF.careOfficer.profile.maxHouseholdCapacity,
+      phone: SEED_STAFF.careOfficer.profile.phone,
+      clusterCode: SEED_STAFF.careOfficer.profile.clusterCode,
       isAvailable: SEED_STAFF.careOfficer.profile.isAvailable,
-      currentLatitude: SEED_STAFF.careOfficer.profile.currentLatitude,
-      currentLongitude: SEED_STAFF.careOfficer.profile.currentLongitude
+      homeBaseLat: SEED_STAFF.careOfficer.profile.homeBaseLat,
+      homeBaseLng: SEED_STAFF.careOfficer.profile.homeBaseLng
     }
   });
 
@@ -131,31 +129,26 @@ export async function seedStaff(prisma: PrismaClient): Promise<void> {
   const certExpiry = new Date();
   certExpiry.setFullYear(certExpiry.getFullYear() + 2); // Valid for 2 years
 
-  const certs = [
-    { code: 'BLS_CPR', name: 'Basic Life Support & CPR', authority: 'AHA' },
-    { code: 'GERIATRIC_FIRST_AID', name: 'Geriatric First Aid', authority: 'Red Cross' }
-  ];
+  const certRecords = await prisma.certification.findMany();
 
-  for (const cert of certs) {
+  for (const cert of certRecords) {
     await prisma.careOfficerCertification.upsert({
       where: {
-        careOfficerId_certificationCode: {
-          careOfficerId: officerUser.id,
-          certificationCode: cert.code
+        careOfficerId_certificationId: {
+          careOfficerId: profile.id,
+          certificationId: cert.id
         }
       },
       update: {
         expiresAt: certExpiry,
-        status: 'ACTIVE'
+        status: CertificationStatus.ACTIVE
       },
       create: {
-        careOfficerId: officerUser.id,
-        certificationCode: cert.code,
-        certificationName: cert.name,
-        issuingAuthority: cert.authority,
+        careOfficerId: profile.id,
+        certificationId: cert.id,
         issuedAt: new Date(),
         expiresAt: certExpiry,
-        status: 'ACTIVE'
+        status: CertificationStatus.ACTIVE
       }
     });
   }

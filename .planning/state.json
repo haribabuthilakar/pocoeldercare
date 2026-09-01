@@ -26,7 +26,7 @@
     {
       "number": "5",
       "name": "Admin Portal (Next.js)",
-      "status": "pending"
+      "status": "complete"
     },
     {
       "number": "6",
@@ -46,8 +46,8 @@
   ],
   "next": {
     "command": "/gsd-progress --next",
-    "label": "Advance to the next step",
-    "reason": "Phase 3 of 8 · 0% · executing"
+    "label": "Advance to the next step (plan phase 6)",
+    "reason": "Phase 6 of 8 — needs a plan"
   },
-  "updated_at": "2026-09-01T00:47:26.664Z"
+  "updated_at": "2026-09-01T03:45:34.270Z"
 }

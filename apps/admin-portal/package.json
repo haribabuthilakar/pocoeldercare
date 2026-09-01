@@ -7,6 +7,8 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "clean": "rm -rf dist"
   },
   "dependencies": {
@@ -18,7 +20,9 @@
     "@poco/types": "workspace:*",
     "@poco/ui": "workspace:*",
     "@poco/validation": "workspace:*",
+    "@tanstack/react-query": "^5.62.0",
     "lucide-react": "^0.468.0",
+    "next": "^15.1.0",
     "zod": "^3.24.1"
   },
   "peerDependencies": {
@@ -27,12 +31,16 @@
   },
   "devDependencies": {
     "@poco/tsconfig": "workspace:*",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
+    "jsdom": "^26.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tsup": "^8.3.5",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^3.0.5"
   }
 }

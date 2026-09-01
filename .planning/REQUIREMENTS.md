@@ -25,8 +25,8 @@
 ### Care Officer Assignment, Certifications & Fallback
 
 - [ ] **CARE-01**: System enforces a strict 1:1 active mapping between each household and exactly one assigned Care Officer.
-- [ ] **CARE-02**: Only internal users holding the Care Officer Manager role can create or modify household care officer assignments.
-- [ ] **CARE-03**: Care Officer assignment is strictly blocked by the backend unless the officer has active, non-expired records for all mandatory certifications.
+- [x] **CARE-02**: Only internal users holding the Care Officer Manager role can create or modify household care officer assignments.
+- [x] **CARE-03**: Care Officer assignment is strictly blocked by the backend unless the officer has active, non-expired records for all mandatory certifications.
 - [ ] **CARE-04**: Senior Care Officers can view households and performance metrics for all Care Officers reporting to them via `ReportingLine`.
 - [ ] **CARE-05**: When an assigned Care Officer is unresponsive or breaches service delivery SLAs, the supervising Senior Care Officer is automatically assigned as fallback.
 
@@ -54,7 +54,7 @@
 - [ ] **CATL-02**: Packages (Kavach, Sahara, Sampoorna) are versioned (`PackageVersion`) with configurable monthly/yearly rates and per-service quotas (`PackageServiceQuota`).
 - [ ] **CATL-03**: Household subscriptions pin to the specific `packageVersionId` in effect at subscription or renewal, preserving grandfathered terms.
 - [ ] **CATL-04**: Service Requests pin to the specific `serviceCatalogVersionId` in effect at creation time, preserving historical SOP terms and pricing.
-- [ ] **CATL-05**: Administrators can publish new catalog and package versions without altering existing active subscriptions.
+- [x] **CATL-05**: Administrators can publish new catalog and package versions without altering existing active subscriptions.
 
 ### Billing, Quotas & Household Wallet Engine
 
@@ -81,7 +81,7 @@
 - [ ] **FLD-01**: Field App operates offline-first using local SQLite / WatermelonDB data storage.
 - [ ] **FLD-02**: Care Officers can view assigned households, senior health profiles, and scheduled visits without network connectivity.
 - [ ] **FLD-03**: Care Officers execute SOPs using guided checklist wizards with step-level done/not-done verification.
-- [ ] **FLD-04**: Photo and media attachments upload directly to S3 via presigned URLs; only presigned S3 URLs are submitted to the backend.
+- [x] **FLD-04**: Photo and media attachments upload directly to S3 via presigned URLs; only presigned S3 URLs are submitted to the backend.
 - [ ] **FLD-05**: Care Officers perform GPS geofenced check-in and check-out for household visits.
 - [ ] **FLD-06**: Offline actions queue locally with client-generated UUIDs and push to backend on reconnect via `POST /api/field/v1/sync/batch`.
 - [ ] **FLD-07**: Server enforces authoritative validation on sync, rejecting illegal state transitions and surfacing conflict resolution UI.

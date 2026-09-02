@@ -58,4 +58,15 @@ docker exec poco-prod-api pnpm --filter @poco/database db:migrate
 echo "🌱 Ensuring database has realistic records..."
 docker exec -e ALLOW_PROD_SEED=true poco-prod-api pnpm --filter @poco/database db:seed:realistic || true
 
+# 6. Restart Nginx to connect to fresh container sockets & clear any stale upstream DNS
+echo "🔄 Refreshing Nginx reverse proxy connections..."
+docker compose -f docker/docker-compose.prod.yml restart nginx
+
+# 7. Verify all services are healthy and responding
+echo "🩺 Verifying endpoint connectivity..."
+sleep 3
+docker exec poco-prod-nginx wget -qO- http://127.0.0.1/api/health >/dev/null 2>&1 && echo "  ✓ Backend API: OK" || echo "  ⚠️ Backend API not ready yet"
+docker exec poco-prod-nginx wget -qO- http://127.0.0.1/field/health >/dev/null 2>&1 && echo "  ✓ Field App: OK" || echo "  ⚠️ Field App not ready yet"
+docker exec poco-prod-nginx wget -qO- http://127.0.0.1/ >/dev/null 2>&1 && echo "  ✓ Admin Web Portal: OK" || echo "  ⚠️ Admin Web Portal not ready yet"
+
 echo "🎉 Deployment completed successfully!"

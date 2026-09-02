@@ -64,13 +64,16 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3000
+      HOSTNAME: "0.0.0.0"
       NEXT_PUBLIC_API_BASE_URL: http://168.144.187.23/api
+    ports:
+      - "3000:3000"
     depends_on:
       - backend
     deploy:
       resources:
         limits:
-          memory: 180M
+          memory: 250M
     logging:
       driver: "json-file"
       options:
@@ -96,7 +99,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 120M
+          memory: 150M
     logging:
       driver: "json-file"
       options:

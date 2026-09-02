@@ -1,4 +1,4 @@
-﻿import {
+import {
   Controller,
   Get,
   Post,
@@ -34,3 +34,24 @@ export class BillingController {
     return this.billingService.generateInvoice(transactionId);
   }
 }
+
+@Controller('admin/v1/billing')
+@UseGuards(JwtAuthGuard)
+export class AdminBillingController {
+  constructor(private readonly billingService: BillingService) {}
+
+  @Get('overview')
+  async getOverview() {
+    return this.billingService.getAdminBillingOverview();
+  }
+
+  @Post('households/:householdId/alert-overdraft')
+  @HttpCode(HttpStatus.OK)
+  async alertOverdraft(
+    @Param('householdId') householdId: string,
+    @Body() body: { channel?: string },
+  ) {
+    return this.billingService.alertOverdraft(householdId, body?.channel);
+  }
+}
+

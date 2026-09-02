@@ -15,9 +15,7 @@ export class CatalogService {
       where: { isActive: true },
       include: {
         versions: {
-          where: { effectiveTo: null },
           orderBy: { version: 'desc' },
-          take: 1,
           include: {
             sopSteps: {
               orderBy: { stepOrder: 'asc' },
@@ -28,13 +26,28 @@ export class CatalogService {
     });
 
     return services.map((s) => {
-      const activeVersion = s.versions[0];
+      const activeVersion = s.versions.find((v) => !v.effectiveTo) || s.versions[0];
       return {
         id: s.id,
         code: s.code,
         name: s.name,
         category: s.category,
         defaultIsEmergency: s.defaultIsEmergency,
+        currentVersion: activeVersion?.version ?? 1,
+        currentPricePaise: activeVersion?.pricePaise ?? 0,
+        currentEstimatedDurationMinutes: activeVersion?.estimatedDurationMinutes ?? 60,
+        currentRequiredCertifications: activeVersion?.requiredCertifications ?? [],
+        currentSopSteps: activeVersion?.sopSteps ?? [],
+        activeSubscriberCount: 0,
+        versions: s.versions.map((v) => ({
+          id: v.id,
+          version: v.version,
+          pricePaise: v.pricePaise,
+          estimatedDurationMinutes: v.estimatedDurationMinutes,
+          effectiveFrom: v.effectiveFrom.toISOString(),
+          effectiveTo: v.effectiveTo ? v.effectiveTo.toISOString() : null,
+          requiredCertifications: v.requiredCertifications,
+        })),
         activeVersion: activeVersion
           ? {
               id: activeVersion.id,

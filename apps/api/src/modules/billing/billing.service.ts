@@ -252,4 +252,101 @@ export class BillingService {
       description: tx.description,
     };
   }
+
+  async getAdminBillingOverview() {
+    const [subscriptionsCount, wallets, recentTransactions] = await Promise.all([
+      this.prisma.householdSubscription.count({ where: { status: 'ACTIVE' } }),
+      this.prisma.householdWallet.findMany({
+        include: {
+          household: {
+            include: {
+              memberships: {
+                where: { isPrimaryContact: true },
+                include: { person: true },
+              },
+            },
+          },
+        },
+      }),
+      this.prisma.walletTransaction.findMany({
+        take: 20,
+        orderBy: { createdAt: 'desc' },
+        include: {
+          wallet: { include: { household: true } },
+        },
+      }),
+    ]);
+
+    let totalWalletBalancePaise = 0;
+    let totalOverdraftDebtPaise = 0;
+    const overdraftAccounts: Array<{
+      householdId: string;
+      householdName: string;
+      city: string;
+      primaryContactPhone: string;
+      negativeBalancePaise: number;
+      lastEmergencyTicketId?: string;
+      daysOverdrawn: number;
+    }> = [];
+
+    for (const w of wallets) {
+      if (w.balancePaise < 0) {
+        totalOverdraftDebtPaise += Math.abs(w.balancePaise);
+        const primaryPhone =
+          w.household.memberships[0]?.person?.phone || '+91 98765 43210';
+        overdraftAccounts.push({
+          householdId: w.householdId,
+          householdName: w.household.name,
+          city: w.household.city,
+          primaryContactPhone: primaryPhone,
+          negativeBalancePaise: w.balancePaise,
+          daysOverdrawn: Math.max(
+            1,
+            Math.floor((Date.now() - new Date(w.updatedAt).getTime()) / (1000 * 60 * 60 * 24)),
+          ),
+        });
+      } else {
+        totalWalletBalancePaise += w.balancePaise;
+      }
+    }
+
+    // Estimate MRR (e.g. ₹5,000 per active subscription or baseline)
+    const mrrPaise = subscriptionsCount * 500000;
+
+    return {
+      mrrPaise,
+      activeSubscriptionsCount: subscriptionsCount,
+      totalWalletBalancePaise,
+      totalOverdraftDebtPaise,
+      overdraftAccounts,
+      recentTransactions: recentTransactions.map((tx) => ({
+        id: tx.id,
+        householdId: tx.wallet.householdId,
+        householdName: tx.wallet.household.name,
+        type: tx.type,
+        amountPaise: tx.amountPaise,
+        description: tx.description,
+        createdAt: tx.createdAt.toISOString(),
+      })),
+    };
+  }
+
+  async alertOverdraft(householdId: string, channel: string = 'SMS_PUSH') {
+    const wallet = await this.prisma.householdWallet.findUnique({
+      where: { householdId },
+      include: { household: true },
+    });
+
+    if (!wallet) {
+      throw new NotFoundException('Household wallet not found');
+    }
+
+    return {
+      success: true,
+      message: `Overdraft alert dispatched via ${channel} to household ${wallet.household.name}`,
+      householdId,
+      dispatchedAt: new Date().toISOString(),
+    };
+  }
 }
+

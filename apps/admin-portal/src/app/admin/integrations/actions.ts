@@ -1,3 +1,5 @@
+'use server';
+
 import { PartnerCode } from '@poco/constants';
 import { prisma } from '@poco/database';
 import {

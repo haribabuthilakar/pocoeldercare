@@ -1,10 +1,10 @@
-﻿import { Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { HouseholdsService } from './households.service';
 import { HouseholdsController } from './households.controller';
-import { OnboardingController } from './onboarding.controller';
+import { OnboardingController, AdminLeadsController } from './onboarding.controller';
 
 @Module({
-  controllers: [HouseholdsController, OnboardingController],
+  controllers: [HouseholdsController, OnboardingController, AdminLeadsController],
   providers: [HouseholdsService],
   exports: [HouseholdsService],
 })

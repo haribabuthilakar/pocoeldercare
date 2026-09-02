@@ -1,4 +1,4 @@
-﻿import {
+import {
   Injectable,
   BadRequestException,
   ForbiddenException,
@@ -207,4 +207,52 @@ export class CareOfficersService {
     });
     return certs;
   }
+
+  async upsertOfficerCertification(
+    careOfficerId: string,
+    certificationCode: string,
+    status: any,
+    expiresAt: Date,
+  ) {
+    let certDef = await this.prisma.certification.findUnique({
+      where: { code: certificationCode },
+    });
+
+    if (!certDef) {
+      certDef = await this.prisma.certification.create({
+        data: {
+          code: certificationCode,
+          name: certificationCode.replace(/_/g, ' '),
+          validityDays: 365,
+        },
+      });
+    }
+
+    const officerCert = await this.prisma.careOfficerCertification.upsert({
+      where: {
+        careOfficerId_certificationId: {
+          careOfficerId,
+          certificationId: certDef.id,
+        },
+      },
+      update: {
+        status,
+        expiresAt,
+        updatedAt: new Date(),
+      },
+      create: {
+        careOfficerId,
+        certificationId: certDef.id,
+        issuedAt: new Date(),
+        expiresAt,
+        status,
+      },
+    });
+
+    return {
+      success: true,
+      officerCert,
+    };
+  }
 }
+

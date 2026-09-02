@@ -1,4 +1,4 @@
-﻿import {
+import {
   Controller,
   Get,
   Post,
@@ -47,9 +47,25 @@ export class CareOfficersController {
     return this.careOfficersService.getOfficerCertifications(id);
   }
 
+  @Post(':id/certifications')
+  @Roles(UserRole.CARE_MANAGER, UserRole.OPS_MANAGER, UserRole.SUPER_ADMIN)
+  @HttpCode(HttpStatus.OK)
+  async updateCertification(
+    @Param('id') id: string,
+    @Body() body: { certificationCode: string; status: any; expiresAt?: string },
+  ) {
+    return this.careOfficersService.upsertOfficerCertification(
+      id,
+      body.certificationCode,
+      body.status,
+      body.expiresAt ? new Date(body.expiresAt) : new Date(),
+    );
+  }
+
   @Post('tickets/:ticketId/fallback')
   @Roles(UserRole.CARE_MANAGER, UserRole.OPS_MANAGER, UserRole.SUPER_ADMIN)
   async fallbackEscalate(@Param('ticketId') ticketId: string) {
     return this.careOfficersService.executeSupervisorFallback(ticketId);
   }
 }
+

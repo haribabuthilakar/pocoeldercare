@@ -12,6 +12,7 @@ import { ActivityFeedModule } from './modules/activity-feed/activity-feed.module
 import { AiTriageModule } from './modules/ai-triage/ai-triage.module';
 import { IntegrationsModule } from '@poco/integrations';
 import { WebhooksModule } from './modules/webhooks/webhooks.module';
+import { DatabaseModule } from './modules/database/database.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { WebhooksModule } from './modules/webhooks/webhooks.module';
     AiTriageModule,
     IntegrationsModule,
     WebhooksModule,
+    DatabaseModule,
   ],
 })
 export class AppModule {}

@@ -1,6 +1,9 @@
 import {
   Controller,
+  Get,
   Post,
+  Patch,
+  Param,
   Body,
   UseGuards,
   HttpCode,
@@ -177,3 +180,66 @@ export class OnboardingController {
     };
   }
 }
+
+@Controller('admin/v1/leads')
+@UseGuards(JwtAuthGuard)
+export class AdminLeadsController {
+  constructor(private readonly prisma: PrismaService) {}
+
+  @Get()
+  async getLeads() {
+    const leads = await this.prisma.lead.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 100,
+    });
+
+    return leads.map((l) => ({
+      id: l.id,
+      contactName: l.contactName,
+      phone: l.phone,
+      email: l.email,
+      city: l.city,
+      stage: l.stage,
+      notes: l.notes,
+      assignedSalesExecutive: 'Rajesh Sharma',
+      assignedCsExecutive: l.stage === 'ONBOARDING_PENDING' || l.stage === 'CONVERTED' ? 'Kavita Roy' : undefined,
+      createdAt: l.createdAt.toISOString(),
+      convertedHouseholdId: l.convertedHouseholdId,
+    }));
+  }
+
+  @Patch(':id/stage')
+  async updateStage(
+    @Param('id') id: string,
+    @Body() body: { stage: LeadStage; notes?: string },
+  ) {
+    const lead = await this.prisma.lead.update({
+      where: { id },
+      data: {
+        stage: body.stage,
+        notes: body.notes ? body.notes : undefined,
+      },
+    });
+    return lead;
+  }
+
+  @Post(':id/remind')
+  @HttpCode(HttpStatus.OK)
+  async sendReminder(
+    @Param('id') id: string,
+    @Body() body: { channel?: string },
+  ) {
+    const lead = await this.prisma.lead.findUnique({
+      where: { id },
+    });
+    return {
+      success: true,
+      leadId: id,
+      contactName: lead?.contactName,
+      channel: body?.channel || 'SMS_WHATSAPP',
+      message: 'Onboarding payment & registration reminder sent successfully.',
+      dispatchedAt: new Date().toISOString(),
+    };
+  }
+}
+

@@ -1,5 +1,5 @@
-﻿import { Controller, Put, Get, Param, Req, Res, HttpStatus } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Controller, Put, Get, Param, Req, Res, HttpStatus } from '@nestjs/common';
+import type { Request, Response } from 'express';
 
 @Controller('test/media')
 export class LocalDiskController {
